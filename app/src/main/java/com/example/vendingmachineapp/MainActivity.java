@@ -1,5 +1,6 @@
 package com.example.vendingmachineapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -60,14 +61,21 @@ public class MainActivity extends AppCompatActivity {
                 name = new ArrayList<>();
                 desc = new ArrayList<>();
                 price = new ArrayList<>();
-
                 storeProductsDataInArrays();
-                adapter = new customProductAdapter(MainActivity.this,name,price,id,desc);
+                adapter = new customProductAdapter(MainActivity.this,MainActivity.this,name,price,id,desc);
                 products_RV.setAdapter(adapter);
                 products_RV.setLayoutManager(new LinearLayoutManager(MainActivity.this));
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            recreate();
+        }
     }
 
     public void storeProductsDataInArrays(){

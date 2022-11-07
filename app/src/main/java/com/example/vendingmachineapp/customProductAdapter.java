@@ -1,6 +1,7 @@
 package com.example.vendingmachineapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -16,13 +17,17 @@ import java.util.ArrayList;
 
 public class customProductAdapter extends RecyclerView.Adapter<customProductAdapter.MyProductViewHolder> {
     private Context contex;
+    Activity activity;
     private ArrayList name,desc,price,id;
 
-    public customProductAdapter(Context contex,
+
+    public customProductAdapter(Activity activity,
+                                Context contex,
                                 ArrayList name,
                                 ArrayList price,
                                 ArrayList id,
                                 ArrayList desc){
+        this.activity = activity;
         this.contex = contex;
         this.name = name;
         this.price = price;
@@ -50,7 +55,7 @@ public class customProductAdapter extends RecyclerView.Adapter<customProductAdap
             public void onClick(View view) {
                 Intent intent = new Intent(contex,UpdateProducts.class);
                 intent.putExtra("id",String.valueOf(id.get(position)));
-                contex.startActivity(intent);
+                activity.startActivityForResult(intent,1);
             }
         });
     }
