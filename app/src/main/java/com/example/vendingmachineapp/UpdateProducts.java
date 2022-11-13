@@ -47,7 +47,7 @@ public class UpdateProducts extends AppCompatActivity {
             amountinbox.setText(String.valueOf(cursor.getInt(5)));
             weight.setText(String.valueOf(cursor.getFloat(6)));
         }
-
+        cursor.close();
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

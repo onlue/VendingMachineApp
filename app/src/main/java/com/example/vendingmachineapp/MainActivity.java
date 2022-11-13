@@ -12,6 +12,9 @@ import android.database.Cursor;
 import android.graphics.drawable.DrawableContainer;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.QuickContactBadge;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,12 +30,37 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> id, name, desc, price;
     customProductAdapter adapter;
 
+    Button reg;
+    Button log;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
+
+        findViewById(R.id.regBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setContentView(R.layout.registration_layout);
+                findViewById(R.id.registrationButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MyDataBaseHelper db = new MyDataBaseHelper(MainActivity.this);
+                        EditText login, mail, pass, fio;
+                        login = findViewById(R.id.loginField);
+                        mail = findViewById(R.id.emailField);
+                        pass = findViewById(R.id.passwordField);
+                        fio = findViewById(R.id.fioField);
+                        db.AddAccount(login.getText().toString(),
+                                pass.getText().toString(),
+                                fio.getText().toString(),
+                                mail.getText().toString());
+                    }
+                });
+            }
+        });
 
         findViewById(R.id.imageM).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 price.add(cursor.getString(3));
             }
         }
+        cursor.close();
     }
 
 }
