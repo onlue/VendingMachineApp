@@ -43,22 +43,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.regBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setContentView(R.layout.registration_layout);
-                findViewById(R.id.registrationButton).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        MyDataBaseHelper db = new MyDataBaseHelper(MainActivity.this);
-                        EditText login, mail, pass, fio;
-                        login = findViewById(R.id.loginField);
-                        mail = findViewById(R.id.emailField);
-                        pass = findViewById(R.id.passwordField);
-                        fio = findViewById(R.id.fioField);
-                        db.AddAccount(login.getText().toString(),
-                                pass.getText().toString(),
-                                fio.getText().toString(),
-                                mail.getText().toString());
-                    }
-                });
+                Intent intent = new Intent(MainActivity.this,AddAccount.class);
+                startActivity(intent);
             }
         });
 
@@ -73,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setContentView(R.layout.products_layout);
+
                 products_RV = findViewById(R.id.product_view);
                 addProductsButton = findViewById(R.id.products_add);
 
@@ -85,10 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 mydb = new MyDataBaseHelper(MainActivity.this);
-                id = new ArrayList<>();
-                name = new ArrayList<>();
-                desc = new ArrayList<>();
-                price = new ArrayList<>();
                 storeProductsDataInArrays();
                 adapter = new customProductAdapter(MainActivity.this,MainActivity.this,name,price,id,desc);
                 products_RV.setAdapter(adapter);
@@ -107,6 +90,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void storeProductsDataInArrays(){
+        id = new ArrayList<>();
+        name = new ArrayList<>();
+        desc = new ArrayList<>();
+        price = new ArrayList<>();
+
         Cursor cursor = mydb.readProductsData();
         if(cursor.getCount() == 0){
             Toast.makeText(this, "Нет данных!", Toast.LENGTH_SHORT).show();
