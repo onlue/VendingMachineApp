@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class customProductAdapter extends RecyclerView.Adapter<customProductAdapter.MyProductViewHolder> {
     private Context contex;
     Activity activity;
-    private ArrayList name,desc,price,id;
+    private ArrayList name, desc, price, id;
 
 
     public customProductAdapter(Activity activity,
@@ -26,7 +26,7 @@ public class customProductAdapter extends RecyclerView.Adapter<customProductAdap
                                 ArrayList name,
                                 ArrayList price,
                                 ArrayList id,
-                                ArrayList desc){
+                                ArrayList desc) {
         this.activity = activity;
         this.contex = contex;
         this.name = name;
@@ -39,7 +39,7 @@ public class customProductAdapter extends RecyclerView.Adapter<customProductAdap
     @Override
     public MyProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(contex);
-        View view = inflater.inflate(R.layout.my_product_row, parent,false);
+        View view = inflater.inflate(R.layout.my_product_row, parent, false);
         return new MyProductViewHolder(view);
     }
 
@@ -53,9 +53,9 @@ public class customProductAdapter extends RecyclerView.Adapter<customProductAdap
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(contex,UpdateProducts.class);
-                intent.putExtra("id",String.valueOf(id.get(position)));
-                activity.startActivityForResult(intent,1);
+                Intent intent = new Intent(contex, UpdateProducts.class);
+                intent.putExtra("id", String.valueOf(id.get(position)));
+                activity.startActivityForResult(intent, 1);
             }
         });
     }

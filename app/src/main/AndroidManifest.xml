@@ -13,6 +13,13 @@
         android:theme="@style/Theme.VendingMachineApp"
         tools:targetApi="31">
         <activity
+            android:name=".LoginActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".UpdateProducts"
             android:exported="false">
             <meta-data
@@ -43,6 +50,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ProductsOption"
+            android:exported="true"
+            android:label="VendingMachineManager">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

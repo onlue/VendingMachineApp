@@ -2,6 +2,7 @@ package com.example.vendingmachineapp;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,20 +31,27 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> id, name, desc, price;
     customProductAdapter adapter;
 
-    Button reg;
-    Button log;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
 
+        findViewById(R.id.authBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         findViewById(R.id.regBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,AddAccount.class);
+                Intent intent = new Intent(MainActivity.this, AddAccount.class);
                 startActivity(intent);
             }
         });
@@ -58,24 +66,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.product_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setContentView(R.layout.products_layout);
+                Intent intent = new Intent(MainActivity.this,ProductsOption.class);
+                startActivity(intent);
 
-                products_RV = findViewById(R.id.product_view);
-                addProductsButton = findViewById(R.id.products_add);
-
-                addProductsButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(MainActivity.this, AddProductsActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                mydb = new MyDataBaseHelper(MainActivity.this);
-                storeProductsDataInArrays();
-                adapter = new customProductAdapter(MainActivity.this,MainActivity.this,name,price,id,desc);
-                products_RV.setAdapter(adapter);
-                products_RV.setLayoutManager(new LinearLayoutManager(MainActivity.this));
             }
         });
 
@@ -84,31 +77,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1){
+        if (requestCode == 1) {
             recreate();
         }
     }
 
-    public void storeProductsDataInArrays(){
-        id = new ArrayList<>();
-        name = new ArrayList<>();
-        desc = new ArrayList<>();
-        price = new ArrayList<>();
 
-        Cursor cursor = mydb.readProductsData();
-        if(cursor.getCount() == 0){
-            Toast.makeText(this, "Нет данных!", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            while(cursor.moveToNext()){
-                id.add(cursor.getString(0));
-                name.add(cursor.getString(1));
-                desc.add(cursor.getString(2));
-                price.add(cursor.getString(3));
-            }
-        }
-        cursor.close();
-    }
 
 }
 

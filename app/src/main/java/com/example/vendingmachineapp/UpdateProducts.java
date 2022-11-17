@@ -16,8 +16,8 @@ import android.widget.Toast;
 public class UpdateProducts extends AppCompatActivity {
 
     String extra_id;
-    EditText name,desc,price,amount,amountinbox,weight;
-    Button delete,edit;
+    EditText name, desc, price, amount, amountinbox, weight;
+    Button delete, edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,8 @@ public class UpdateProducts extends AppCompatActivity {
         SQLiteDatabase sqlite = dbhelper.getWritableDatabase();
 
         Cursor cursor = null;
-        if(sqlite != null){
-            cursor = sqlite.rawQuery("SELECT * FROM products WHERE _id = " + extra_id,null);
+        if (sqlite != null) {
+            cursor = sqlite.rawQuery("SELECT * FROM products WHERE _id = " + extra_id, null);
             cursor.moveToFirst();
             name.setText(cursor.getString(1));
             desc.setText(cursor.getString(2));
@@ -63,7 +63,7 @@ public class UpdateProducts extends AppCompatActivity {
                         "',description = '" + desc.getText().toString() +
                         "', price =  " + price.getText().toString() +
                         ", amount = " + amount.getText().toString() +
-                        ", amountinbox = " + amountinbox.getText().toString()+
+                        ", amountinbox = " + amountinbox.getText().toString() +
                         ", weight = " + weight.getText().toString() +
                         " WHERE _id = " + Integer.valueOf(extra_id));
                 Toast.makeText(UpdateProducts.this, "Успешно обновлено!", Toast.LENGTH_SHORT).show();
@@ -72,7 +72,7 @@ public class UpdateProducts extends AppCompatActivity {
 
     }
 
-    public void getId(){
+    public void getId() {
         extra_id = getIntent().getStringExtra("id");
     }
 }

@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 public class AddProductsActivity extends AppCompatActivity {
 
-    EditText name,desc,price,amount,amountinbox,weight;
+    EditText name, desc, price, amount, amountinbox, weight;
     Button addBtn;
 
     @Override
@@ -37,7 +37,7 @@ public class AddProductsActivity extends AppCompatActivity {
                         Integer.valueOf(amount.getText().toString().trim()),
                         Integer.valueOf(amountinbox.getText().toString().trim()),
                         Float.valueOf(weight.getText().toString().trim()));
-                }
+            }
         });
     }
 }
