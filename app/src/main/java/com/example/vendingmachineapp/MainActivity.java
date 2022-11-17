@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.DrawableContainer;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.QuickContactBadge;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> id, name, desc, price;
     customProductAdapter adapter;
 
+    TextView hello;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +41,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        hello = findViewById(R.id.helloText);
+        boolean temp = sharedPreferences.getBoolean("isLogined", false);
+        if (temp) {
+            hello.setText("Здравствуйте, " + sharedPreferences.getString("user_fio", "") + "!");
+        }
+
         DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
 
         findViewById(R.id.authBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -66,9 +76,17 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.product_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,ProductsOption.class);
+                Intent intent = new Intent(MainActivity.this, ProductsOption.class);
                 startActivity(intent);
 
+            }
+        });
+
+        findViewById(R.id.vendings_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,VendingsOption.class);
+                startActivity(intent);
             }
         });
 
@@ -81,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
             recreate();
         }
     }
-
 
 
 }

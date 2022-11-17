@@ -2,9 +2,11 @@ package com.example.vendingmachineapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,6 +15,8 @@ import androidx.annotation.Nullable;
 import java.util.regex.Pattern;
 
 public class MyDataBaseHelper extends SQLiteOpenHelper {
+
+    SharedPreferences settings;
 
     private Context context;
     public static final String DATABASE_NAME = "VendingDB";
@@ -73,12 +77,12 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
 
         query = "CREATE TABLE " + TABLE_NAME_MACHINES + "( " +
-                COLUMN_VENDINGMACHINEID + " INTEGER PRIMARY KEY, " +
-                COLUMN_MACHINECUSTOMER + "INTEGER REFERENCES " + TABLE_NAME_LOGIN + "(" + COLUNM_CUSTOMERID + ") ON DELETE CASCADE, " +
-                COLUMN_CAPACITY + "INTEGER, " +
-                COLUMN_MACHINENAME  + "TEXT, " +
-                COLUMN_LOCATION + "TEXT, " +
-                COLUMN_COURIER + "TEXT);";
+                COLUMN_VENDINGMACHINEID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_MACHINECUSTOMER + " INTEGER REFERENCES " + TABLE_NAME_LOGIN + "(" + COLUNM_CUSTOMERID + ") ON DELETE CASCADE, " +
+                COLUMN_CAPACITY + " INTEGER, " +
+                COLUMN_MACHINENAME  + " TEXT, " +
+                COLUMN_LOCATION + " TEXT, " +
+                COLUMN_COURIER + " TEXT);";
         db.execSQL(query);
     }
 
@@ -88,6 +92,25 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_LOGIN);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MACHINES);
         onCreate(db);
+    }
+
+    public void AddMachine(int customerId, int capacity, String name, String location,String courier){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_MACHINECUSTOMER,customerId);
+        values.put(COLUMN_CAPACITY,capacity);
+        values.put(COLUMN_MACHINENAME,name);
+        values.put(COLUMN_LOCATION,location);
+        values.put(COLUMN_COURIER,courier);
+
+        long result = db.insert(TABLE_NAME_MACHINES, null, values);
+
+        if (result == -1) {
+            Toast.makeText(context, "Ошибка добавления!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Успешно добавлено!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void AddAccount(String login, String password, String FIO, String mail) {
@@ -179,15 +202,30 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         }
 
         cursor.moveToFirst();
+        long id = cursor.getInt(0);
         trueLogin = cursor.getString(1);
         truePassword = cursor.getString(2);
+        String fio = cursor.getString(3);
+        String mail = cursor.getString(4);
+
+        settings = context.getSharedPreferences("Settings",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
 
         if(String.valueOf(trueLogin).equals(String.valueOf(Login)) && String.valueOf(truePassword).equals(String.valueOf(Password))){
             Toast.makeText(context, "Вы успешно вошли!", Toast.LENGTH_SHORT).show();
+            editor.clear();
+            editor.putString("user_login",Login);
+            editor.putString("user_password",Password);
+            editor.putString("user_fio",fio);
+            editor.putString("user_email",mail);
+            editor.putLong("user_id",id);
+            editor.putBoolean("isLogined",true);
+            editor.apply();
         }
         else{
             Toast.makeText(context, "Неправильный логин или пароль!", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     public Cursor readProductsData() {
@@ -199,6 +237,20 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
 
         if (db != null) {
             cursor = db.rawQuery(query, null);
+        }
+
+        return cursor;
+    }
+
+    public Cursor readVendingsData(long userId){
+        String query = "SELECT * FROM " + TABLE_NAME_MACHINES + " WHERE " + COLUMN_MACHINECUSTOMER + " = "  + userId;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+
+        if(db != null){
+            cursor = db.rawQuery(query,null);
         }
 
         return cursor;
