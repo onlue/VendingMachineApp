@@ -12,6 +12,8 @@
         android:layout_height="?actionBarSize"
         android:background="#2196F3"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
@@ -21,6 +23,16 @@
             android:layout_height="match_parent"
             android:backgroundTint="#0C7AEE"
             android:text="Назад" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/vendings_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="4dp"
+            android:background="#FFFFFF" />
 
     </LinearLayout>
 
@@ -41,9 +53,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/vendings_view"
-        android:layout_width="411dp"
-        android:layout_height="674dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 

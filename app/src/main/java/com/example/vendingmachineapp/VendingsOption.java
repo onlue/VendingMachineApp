@@ -1,6 +1,7 @@
 package com.example.vendingmachineapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,9 +16,11 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class VendingsOption extends AppCompatActivity {
 
+    SearchView vending_SV;
     RecyclerView products_RV;
     FloatingActionButton addVengingButton;
 
@@ -32,12 +35,27 @@ public class VendingsOption extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendings_option);
 
+        vending_SV = findViewById(R.id.vendings_search);
+
         backButton = findViewById(R.id.backMainVendings);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        vending_SV.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true;
             }
         });
 
@@ -54,6 +72,29 @@ public class VendingsOption extends AppCompatActivity {
 
         mydb = new MyDataBaseHelper(VendingsOption.this);
         storeVendingDataInArrays();
+    }
+
+    private void filter(String newText) {
+        ArrayList idFilter,nameFilter,locationFilter,capacityFilter;
+        idFilter = new ArrayList<>();
+        nameFilter = new ArrayList<>();
+        locationFilter = new ArrayList<>();
+        capacityFilter = new ArrayList<>();
+
+        for (int i = 0; i < id.size(); i++){
+            if(name.get(i).toLowerCase().contains(newText.toLowerCase(Locale.ROOT))){
+                idFilter.add(id.get(i));
+                nameFilter.add(name.get(i));
+                locationFilter.add(location.get(i));
+                capacityFilter.add(capacity.get(i));
+            }
+        }
+        if(idFilter.isEmpty()){
+            Toast.makeText(this, "Ничего не найдено!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            adapter.filterLists(idFilter,nameFilter,capacityFilter,locationFilter);
+        }
     }
 
     public void storeVendingDataInArrays() {

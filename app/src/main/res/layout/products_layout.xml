@@ -5,21 +5,33 @@
     tools:context=".ProductsOption"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
+        android:layout_height="0dp"
         android:background="#2196F3"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/backMainProduct"
-            android:layout_marginLeft="10dp"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:backgroundTint="#0C7AEE"
             android:text="Назад" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/product_search"
+            android:layout_width="302dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="#FFFFFF" />
 
     </LinearLayout>
 
@@ -41,9 +53,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/product_view"
-        android:layout_width="411dp"
-        android:layout_height="674dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 

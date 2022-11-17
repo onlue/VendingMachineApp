@@ -35,6 +35,14 @@ public class customProductAdapter extends RecyclerView.Adapter<customProductAdap
         this.id = id;
     }
 
+    public void filterLists(ArrayList id, ArrayList name, ArrayList price, ArrayList desc){
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.desc = desc;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public MyProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

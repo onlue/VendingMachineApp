@@ -27,6 +27,14 @@ public class customVendingAdapter extends RecyclerView.Adapter<customVendingAdap
         this.location = location;
     }
 
+    public void filterLists(ArrayList id, ArrayList name, ArrayList capacity, ArrayList location){
+        this.id = id;
+        this.name = name;
+        this.capacity = capacity;
+        this.location = location;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public customVendingAdapter.MyVendigsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

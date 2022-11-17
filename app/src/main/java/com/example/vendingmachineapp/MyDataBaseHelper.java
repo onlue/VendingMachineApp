@@ -128,7 +128,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
             return;
         }
 
-        if (password.trim().length() <= 8) {
+        if (password.trim().length() < 8) {
             Toast.makeText(context, "Пароль должен быть более 8 символов!", Toast.LENGTH_SHORT).show();
             return;
         }
