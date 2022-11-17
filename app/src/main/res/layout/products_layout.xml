@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ProductsOption"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -36,6 +37,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        app:elevation="300dp"
         android:id="@+id/products_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
