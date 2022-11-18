@@ -42,7 +42,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/authLoginField" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        android:textColor="@color/white"
+        android:background="@drawable/buttonbg"
         android:id="@+id/loginButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"

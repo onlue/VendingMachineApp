@@ -66,12 +66,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/machineLocation" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        android:textColor="@color/white"
+        android:background="@drawable/buttonbg"
         android:id="@+id/addMachine"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:backgroundTint="#2196F3"
         android:text="Добавить"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
