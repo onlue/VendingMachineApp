@@ -18,26 +18,24 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class VendingsOption extends AppCompatActivity {
+public class VendingMachineInfoOptions extends AppCompatActivity {
 
     SearchView vending_SV;
     RecyclerView products_RV;
     FloatingActionButton addVengingButton;
 
     MyDataBaseHelper mydb;
-    ArrayList<String> location, name, id, capacity;
-    customVendingAdapter adapter;
+    ArrayList<String> id, nameMachine, productName, capacity;
+    customVendingInfoAdapter adapter;
 
     Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vendings_option);
+        setContentView(R.layout.activity_vending_machine_info_options);
 
-        vending_SV = findViewById(R.id.vendings_search);
-
-        backButton = findViewById(R.id.backMainVendings);
+        backButton = findViewById(R.id.backMainVendingsInfo);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +43,8 @@ public class VendingsOption extends AppCompatActivity {
                 finish();
             }
         });
+
+        vending_SV = findViewById(R.id.vendingsinfo_search);
 
         vending_SV.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -59,19 +59,19 @@ public class VendingsOption extends AppCompatActivity {
             }
         });
 
-        products_RV = findViewById(R.id.vendings_view);
-        addVengingButton = findViewById(R.id.vendings_add);
+        products_RV = findViewById(R.id.vendingsinfo_view);
+        addVengingButton = findViewById(R.id.vendingsinfo_add);
+
+        mydb = new MyDataBaseHelper(VendingMachineInfoOptions.this);
+        storeVendingDataInArrays();
 
         addVengingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(VendingsOption.this, AddVendingsActivity.class);
+                Intent intent = new Intent(VendingMachineInfoOptions.this,AddVendingsInfo.class);
                 startActivity(intent);
             }
         });
-
-        mydb = new MyDataBaseHelper(VendingsOption.this);
-        storeVendingDataInArrays();
     }
 
     private void filter(String newText) {
@@ -82,10 +82,10 @@ public class VendingsOption extends AppCompatActivity {
         capacityFilter = new ArrayList<>();
 
         for (int i = 0; i < id.size(); i++){
-            if(name.get(i).toLowerCase().contains(newText.toLowerCase(Locale.ROOT))){
+            if(nameMachine.get(i).toLowerCase().contains(newText.toLowerCase(Locale.ROOT))){
                 idFilter.add(id.get(i));
-                nameFilter.add(name.get(i));
-                locationFilter.add(location.get(i));
+                nameFilter.add(nameMachine.get(i));
+                locationFilter.add(productName.get(i));
                 capacityFilter.add(capacity.get(i));
             }
         }
@@ -99,8 +99,8 @@ public class VendingsOption extends AppCompatActivity {
 
     public void storeVendingDataInArrays() {
         id = new ArrayList<>();
-        name = new ArrayList<>();
-        location = new ArrayList<>();
+        nameMachine = new ArrayList<>();
+        productName = new ArrayList<>();
         capacity = new ArrayList<>();
 
         SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
@@ -111,7 +111,7 @@ public class VendingsOption extends AppCompatActivity {
             finish();
             return;
         }
-        Cursor cursor = mydb.readVendingsData(userid);
+        Cursor cursor = mydb.readVendingInfoData(userid);
 
         if (cursor.getCount() == 0) {
             Toast.makeText(this, "Нет данных!", Toast.LENGTH_SHORT).show();
@@ -119,13 +119,13 @@ public class VendingsOption extends AppCompatActivity {
             while (cursor.moveToNext()) {
                 id.add(cursor.getString(0));
                 capacity.add(cursor.getString(2));
-                name.add(cursor.getString(3));
-                location.add(cursor.getString(4));
+                nameMachine.add(cursor.getString(3));
+                productName.add(cursor.getString(1));
             }
         }
 
-        adapter = new customVendingAdapter(VendingsOption.this, VendingsOption.this, id, name, capacity, location);
+        adapter = new customVendingInfoAdapter(VendingMachineInfoOptions.this, VendingMachineInfoOptions.this, id, nameMachine, productName, capacity);
         products_RV.setAdapter(adapter);
-        products_RV.setLayoutManager(new LinearLayoutManager(VendingsOption.this));
+        products_RV.setLayoutManager(new LinearLayoutManager(VendingMachineInfoOptions.this));
     }
 }

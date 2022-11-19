@@ -47,6 +47,12 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LOCATION = "location";
     public static final String COLUMN_COURIER = "courier";
 
+    public static final String TABLE_NAME_MACHINESCAPACITY = "machine_capacity";
+    public static final String COLUMN_MACHINESCAPACITYID = "_id";
+    public static final String COLUMN_MACHINESCAPACITYVENDINGMACHINID = "machine_id";
+    public static final String COLUMN_MACHINESCAPACITYPRODUCTID = "product_id";
+    public static final String COLUMN_MACHINESCAPACITYANOUNTAVAILABLE = "AmountInStock";
+
     public MyDataBaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
@@ -86,6 +92,13 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
                 COLUMN_LOCATION + " TEXT, " +
                 COLUMN_COURIER + " TEXT);";
         db.execSQL(query);
+
+        query = "CREATE TABLE " + TABLE_NAME_MACHINESCAPACITY + "( " +
+                COLUMN_MACHINESCAPACITYID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_MACHINESCAPACITYVENDINGMACHINID + " INTEGER REFERENCES " + TABLE_NAME_MACHINES + "(" + COLUMN_VENDINGMACHINEID + ") ON DELETE CASCADE, " +
+                COLUMN_MACHINESCAPACITYPRODUCTID + " INTEGER REFERENCES " + TABLE_NAME_PRODUCTS + "(" + COLUMN_ID + ") ON DELETE CASCADE, "+
+                COLUMN_MACHINESCAPACITYANOUNTAVAILABLE + " INTEGER);";
+        db.execSQL(query);
     }
 
     @Override
@@ -93,6 +106,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_PRODUCTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_LOGIN);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MACHINES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MACHINESCAPACITY);
         onCreate(db);
     }
 
@@ -107,6 +121,28 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_COURIER,courier);
 
         long result = db.insert(TABLE_NAME_MACHINES, null, values);
+
+        if (result == -1) {
+            Toast.makeText(context, "Ошибка добавления!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Успешно добавлено!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void AddSale(String machineId, String productId, String amountInStock){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        if(machineId.isEmpty() || productId.isEmpty() || amountInStock.isEmpty()){
+            Toast.makeText(context, "Не все поля заполнены!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        values.put(COLUMN_MACHINESCAPACITYVENDINGMACHINID, machineId);
+        values.put(COLUMN_MACHINESCAPACITYPRODUCTID, productId);
+        values.put(COLUMN_MACHINESCAPACITYANOUNTAVAILABLE, amountInStock);
+
+        long result = db.insert(TABLE_NAME_MACHINESCAPACITY, null, values);
 
         if (result == -1) {
             Toast.makeText(context, "Ошибка добавления!", Toast.LENGTH_SHORT).show();
@@ -247,6 +283,20 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
 
     public Cursor readVendingsData(long userId){
         String query = "SELECT * FROM " + TABLE_NAME_MACHINES + " WHERE " + COLUMN_MACHINECUSTOMER + " = "  + userId;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+
+        if(db != null){
+            cursor = db.rawQuery(query,null);
+        }
+
+        return cursor;
+    }
+
+    public Cursor readVendingInfoData(long userId){
+        String query = "select machine_capacity._id, products.name, machine_capacity.AmountInStock,vending_machines.name,vending_machines.customerid from machine_capacity inner join vending_machines on machine_capacity.machine_id = vending_machines._id inner join products on products._id = machine_capacity.product_id where vending_machines.customerid = " + String.valueOf(userId);
 
         SQLiteDatabase db = this.getReadableDatabase();
 

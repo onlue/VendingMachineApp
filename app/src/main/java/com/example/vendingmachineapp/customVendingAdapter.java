@@ -51,6 +51,7 @@ public class customVendingAdapter extends RecyclerView.Adapter<customVendingAdap
         holder.vendings_location_text.setText(String.valueOf(location.get(position)));
         holder.vendings_capacity_text.setText(String.valueOf(capacity.get(position)));
         holder.vendings_name_text.setText(String.valueOf(name.get(position)));
+
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

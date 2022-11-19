@@ -16,6 +16,20 @@
         android:theme="@style/Theme.VendingMachineApp"
         tools:targetApi="31">
         <activity
+            android:name=".AddVendingsInfo"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".VendingMachineInfoOptions"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".UpdateVendings"
             android:exported="false">
             <meta-data

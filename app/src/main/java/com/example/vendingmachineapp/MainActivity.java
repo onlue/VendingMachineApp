@@ -58,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.VendingInfo_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,VendingMachineInfoOptions.class);
+                startActivity(intent);
+            }
+        });
+
         findViewById(R.id.regBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
