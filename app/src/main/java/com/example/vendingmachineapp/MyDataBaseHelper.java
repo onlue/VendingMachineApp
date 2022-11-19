@@ -30,6 +30,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_AMOUNT = "amount";
     public static final String COLUMN_AMOUNTINBOX = "amountinbox";
     public static final String COLUMN_WEIGHT = "weight";
+    public static final String COLUMN_PRODUCTIMAGE = "image";
 
     public static final String TABLE_NAME_LOGIN = "Authorization";
     public static final String COLUNM_CUSTOMERID = "_id";
@@ -63,7 +64,8 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
                         COLUMN_PRICE + " REAL, " +
                         COLUMN_AMOUNT + " INTEGER, " +
                         COLUMN_AMOUNTINBOX + " INTEGER, " +
-                        COLUMN_WEIGHT + " REAL);";
+                        COLUMN_WEIGHT + " REAL, " +
+                        COLUMN_PRODUCTIMAGE + " BLOB);";
 
         db.execSQL(query);
 
@@ -168,7 +170,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addProduct(String name, String description, float price, int amount, int amountinbox, float weight) {
+    public void addProduct(String name, String description, float price, int amount, int amountinbox, float weight,byte[] image) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -178,6 +180,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_AMOUNT, amount);
         values.put(COLUMN_AMOUNTINBOX, amountinbox);
         values.put(COLUMN_WEIGHT, weight);
+        values.put(COLUMN_PRODUCTIMAGE,image);
 
         long result = db.insert(TABLE_NAME_PRODUCTS, null, values);
 

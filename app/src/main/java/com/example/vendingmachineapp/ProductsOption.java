@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -26,6 +27,7 @@ public class ProductsOption extends AppCompatActivity {
 
     MyDataBaseHelper mydb;
     ArrayList<String> id, name, desc, price;
+    ArrayList<byte[]> images;
     customProductAdapter adapter;
 
     Button btn;
@@ -71,18 +73,19 @@ public class ProductsOption extends AppCompatActivity {
 
         mydb = new MyDataBaseHelper(ProductsOption.this);
         storeProductsDataInArrays();
-        adapter = new customProductAdapter(ProductsOption.this, ProductsOption.this, name, price, id, desc);
+        adapter = new customProductAdapter(ProductsOption.this, ProductsOption.this, name, price, id, desc,images);
         products_RV.setAdapter(adapter);
         products_RV.setLayoutManager(new LinearLayoutManager(ProductsOption.this));
     }
 
     private void filter(String newText) {
         ArrayList<String> idFilter, nameFilter, descFilter, priceFilter;
-
+        ArrayList<byte[]> imagesFilter;
         idFilter = new ArrayList<>();
         nameFilter = new ArrayList<>();
         descFilter = new ArrayList<>();
         priceFilter = new ArrayList<>();
+        imagesFilter = new ArrayList<>();
 
         for (int i = 0; i < id.size(); i++){
             if(name.get(i).toLowerCase().contains(newText.toLowerCase(Locale.ROOT))){
@@ -90,45 +93,24 @@ public class ProductsOption extends AppCompatActivity {
                 nameFilter.add(name.get(i));
                 descFilter.add(desc.get(i));
                 priceFilter.add(price.get(i));
+                imagesFilter.add(images.get(i));
             }
         }
         if(idFilter.isEmpty()){
             Toast.makeText(this, "Ничего не найдено!", Toast.LENGTH_SHORT).show();
         }
         else{
-            adapter.filterLists(idFilter,nameFilter,priceFilter,descFilter);
+            adapter.filterLists(idFilter,nameFilter,priceFilter,descFilter,images);
         }
     }
 
-//    private void filterList(String newText) {
-//        ArrayList<String> idFilter, nameFilter, descFilter, priceFilter;
-//
-//        idFilter = new ArrayList<>();
-//        nameFilter = new ArrayList<>();
-//        descFilter = new ArrayList<>();
-//        priceFilter = new ArrayList<>();
-//
-//        for(int i = 0;i < id.size(); i += 1){
-//            if(name.get(i).toLowerCase().contains(newText)){
-//                idFilter.add(id.get(i));
-//                nameFilter.add(name.get(i));
-//                descFilter.add(descFilter.get(i));
-//                priceFilter.add(price.get(i));
-//            }
-//        }
-//
-//        for (int i = 0;i < idFilter.size();i+=1){
-//            Toast.makeText(this, String.valueOf(idFilter.get(i)), Toast.LENGTH_SHORT).show();
-//        }
-//
-//        //adapter.changeArrays(nameFilter,descFilter,priceFilter,idFilter);
-//    }
 
     public void storeProductsDataInArrays() {
         id = new ArrayList<>();
         name = new ArrayList<>();
         desc = new ArrayList<>();
         price = new ArrayList<>();
+        images = new ArrayList<byte[]>();
 
         Cursor cursor = mydb.readProductsData();
         if (cursor.getCount() == 0) {
@@ -139,6 +121,7 @@ public class ProductsOption extends AppCompatActivity {
                 name.add(cursor.getString(1));
                 desc.add(cursor.getString(2));
                 price.add(cursor.getString(3));
+                images.add(cursor.getBlob(7));
             }
         }
         cursor.close();

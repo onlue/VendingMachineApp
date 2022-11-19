@@ -1,7 +1,9 @@
 package com.example.vendingmachineapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,11 +46,19 @@ public class customVendingAdapter extends RecyclerView.Adapter<customVendingAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyVendigsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyVendigsViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.vendings_id_text.setText(String.valueOf(id.get(position)));
         holder.vendings_location_text.setText(String.valueOf(location.get(position)));
         holder.vendings_capacity_text.setText(String.valueOf(capacity.get(position)));
         holder.vendings_name_text.setText(String.valueOf(name.get(position)));
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,UpdateVendings.class);
+                intent.putExtra("id", String.valueOf(id.get(position)));
+                activity.startActivityForResult(intent,1);
+            }
+        });
     }
 
     @Override
