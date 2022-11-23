@@ -65,6 +65,14 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_SERVICEMACHINEID = "servicesMachine";
     public static final String COLUMN_SERVICEDATE = "date";
 
+    public static final String TABLE_NAME_SALE = "sale";
+    public static final  String COLUMN_SALEID = "_id";
+    public static final  String COLUMN_SALEMACHINEID = "machineId";
+    public static final  String COLUMN_SALEPRODUCTID = "productId";
+    public static final  String COLUMN_SALEAMOUNT = "amount";
+    public static final  String COLUMN_SALEDATE = "date";
+    public static final  String COLUMN_SALECUSTOMER = "saleCustomer";
+
     public MyDataBaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
@@ -125,6 +133,15 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
                 COLUMN_SERVICEMACHINEID + " INTERGER REFERENCES " + TABLE_NAME_MACHINES + "( " + COLUMN_VENDINGMACHINEID + ") ON DELETE CASCADE, "+
                 COLUMN_SERVICEDATE + " TEXT);";
         db.execSQL(query);
+
+        query = "CREATE TABLE " + TABLE_NAME_SALE + "(" +
+                COLUMN_SALEID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_SALEMACHINEID + " INTEGER REFERENCES " + TABLE_NAME_MACHINES + "( " + COLUMN_VENDINGMACHINEID + ") ON DELETE CASCADE, " +
+                COLUMN_SALEPRODUCTID + " INTEGER REFERENCES " + TABLE_NAME_PRODUCTS + "( " + COLUMN_ID + ") ON DELETE CASCADE, " +
+                COLUMN_SALEAMOUNT + " INTEGER, " +
+                COLUMN_SALEDATE + " TEXT, " +
+                COLUMN_SALECUSTOMER + " INTERGER REFERENCES " + TABLE_NAME_LOGIN + "( " + COLUNM_CUSTOMERID + ") ON DELETE CASCADE);";
+        db.execSQL(query);
     }
 
     @Override
@@ -135,7 +152,27 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MACHINESCAPACITY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_SERVICESDESC);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_SERVICES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_SALE);
         onCreate(db);
+    }
+
+    public void AddSale(String machineId, String productId, String amount, String date, String userId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_SALECUSTOMER,userId);
+        values.put(COLUMN_SALEAMOUNT,amount);
+        values.put(COLUMN_SALEPRODUCTID,productId);
+        values.put(COLUMN_SALEMACHINEID,machineId);
+        values.put(COLUMN_SALEDATE,date);
+
+        long result = db.insert(TABLE_NAME_MACHINESCAPACITY, null, values);
+
+        if (result == -1) {
+            Toast.makeText(context, "Ошибка добавления!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Успешно добавлено!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void AddServices(String servicedescid, String customerId, String machineId, String date){
