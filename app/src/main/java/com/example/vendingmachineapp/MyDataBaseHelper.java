@@ -53,6 +53,18 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_MACHINESCAPACITYPRODUCTID = "product_id";
     public static final String COLUMN_MACHINESCAPACITYANOUNTAVAILABLE = "AmountInStock";
 
+    public static final String TABLE_NAME_SERVICESDESC = "servicesDesc";
+    public static final String COLUMN_SERVICESDESCID = "_id";
+    public static final String COLUMN_SERVICESDESCNAME = "name";
+    public static final String COLUMN_SERVICESDESCRIPTION = "servicesdesc";
+
+    public static final String TABLE_NAME_SERVICES = "services";
+    public static final String COLUMN_SERVICESID = "_id";
+    public static final String COLUMN_SERVICEID = "idServ";
+    public static final String COLUMN_SERVICESCUSTOMERID = "servicesCustomer";
+    public static final String COLUMN_SERVICEMACHINEID = "servicesMachine";
+    public static final String COLUMN_SERVICEDATE = "date";
+
     public MyDataBaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
@@ -99,6 +111,20 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
                 COLUMN_MACHINESCAPACITYPRODUCTID + " INTEGER REFERENCES " + TABLE_NAME_PRODUCTS + "(" + COLUMN_ID + ") ON DELETE CASCADE, "+
                 COLUMN_MACHINESCAPACITYANOUNTAVAILABLE + " INTEGER);";
         db.execSQL(query);
+
+        query = "CREATE TABLE " + TABLE_NAME_SERVICESDESC + "(" +
+                COLUMN_SERVICESDESCID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_SERVICESDESCNAME + " TEXT, " +
+                COLUMN_SERVICESDESCRIPTION + " TEXT);";
+        db.execSQL(query);
+
+        query = "CREATE TABLE " + TABLE_NAME_SERVICES + "(" +
+                COLUMN_SERVICESID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_SERVICEID + " INTEGER REFERENCES " + TABLE_NAME_SERVICESDESC + "( " + COLUMN_SERVICESDESCID + ") ON DELETE CASCADE, " +
+                COLUMN_SERVICESCUSTOMERID + " INTEGER REFERENCES " + TABLE_NAME_LOGIN + "(" + COLUNM_CUSTOMERID + ") ON DELETE CASCADE, " +
+                COLUMN_SERVICEMACHINEID + " INTERGER REFERENCES " + TABLE_NAME_MACHINES + "( " + COLUMN_VENDINGMACHINEID + ") ON DELETE CASCADE, "+
+                COLUMN_SERVICEDATE + " TEXT);";
+        db.execSQL(query);
     }
 
     @Override
@@ -107,7 +133,43 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_LOGIN);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MACHINES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_MACHINESCAPACITY);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_SERVICESDESC);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_SERVICES);
         onCreate(db);
+    }
+
+    public void AddServices(String servicedescid, String customerId, String machineId, String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_SERVICEID,servicedescid);
+        values.put(COLUMN_SERVICESCUSTOMERID,customerId);
+        values.put(COLUMN_SERVICEMACHINEID,machineId);
+        values.put(COLUMN_SERVICEDATE,date);
+
+        long result = db.insert(TABLE_NAME_MACHINESCAPACITY, null, values);
+
+        if (result == -1) {
+            Toast.makeText(context, "Ошибка добавления!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Успешно добавлено!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void AddServicesDesc(String name, String description){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_SERVICESDESCNAME,name);
+        values.put(COLUMN_SERVICESDESCRIPTION,description);
+
+        long result = db.insert(TABLE_NAME_MACHINESCAPACITY, null, values);
+
+        if (result == -1) {
+            Toast.makeText(context, "Ошибка добавления!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Успешно добавлено!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void AddMachine(int customerId, int capacity, String name, String location,String courier){
@@ -325,6 +387,34 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
 
     public Cursor readProductDataForSpinner(){
         String query = "select name,_id from products";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+
+        if(db != null){
+            cursor = db.rawQuery(query,null);
+        }
+
+        return cursor;
+    }
+
+    public Cursor readServicesData(){
+        String query = "SELECT * FROM "  + TABLE_NAME_SERVICESDESC;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+
+        if(db != null){
+            cursor = db.rawQuery(query,null);
+        }
+
+        return cursor;
+    }
+
+    public Cursor readServices(long userId){
+        String query = "SELECT * FROM "  + TABLE_NAME_SERVICESDESC + " WHERE " + COLUMN_SERVICESCUSTOMERID + " = " + userId;
 
         SQLiteDatabase db = this.getReadableDatabase();
 
