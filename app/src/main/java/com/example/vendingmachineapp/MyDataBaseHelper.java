@@ -129,7 +129,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void AddSale(String machineId, String productId, String amountInStock){
+    public void AddVendingInfo(String machineId, String productId, String amountInStock){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -297,6 +297,34 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
 
     public Cursor readVendingInfoData(long userId){
         String query = "select machine_capacity._id, products.name, machine_capacity.AmountInStock,vending_machines.name,vending_machines.customerid from machine_capacity inner join vending_machines on machine_capacity.machine_id = vending_machines._id inner join products on products._id = machine_capacity.product_id where vending_machines.customerid = " + String.valueOf(userId);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+
+        if(db != null){
+            cursor = db.rawQuery(query,null);
+        }
+
+        return cursor;
+    }
+
+    public Cursor readMachineInfoDataForSpinner(long userId){
+        String query = "select vending_machines.name,vending_machines._id from vending_machines inner join Authorization on vending_machines.customerid = Authorization._id where Authorization._id = " + userId;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+
+        if(db != null){
+            cursor = db.rawQuery(query,null);
+        }
+
+        return cursor;
+    }
+
+    public Cursor readProductDataForSpinner(){
+        String query = "select name,_id from products";
 
         SQLiteDatabase db = this.getReadableDatabase();
 

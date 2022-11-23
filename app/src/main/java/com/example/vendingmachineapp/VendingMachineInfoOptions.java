@@ -124,6 +124,8 @@ public class VendingMachineInfoOptions extends AppCompatActivity {
             }
         }
 
+
+
         adapter = new customVendingInfoAdapter(VendingMachineInfoOptions.this, VendingMachineInfoOptions.this, id, nameMachine, productName, capacity);
         products_RV.setAdapter(adapter);
         products_RV.setLayoutManager(new LinearLayoutManager(VendingMachineInfoOptions.this));

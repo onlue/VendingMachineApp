@@ -46,6 +46,7 @@ public class UpdateVendings extends AppCompatActivity {
             public void onClick(View view) {
                 sqlite.execSQL("DELETE FROM vending_machines WHERE _id = " + Integer.valueOf(extra_id));
                 Toast.makeText(UpdateVendings.this, "Удалено!", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 

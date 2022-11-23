@@ -53,6 +53,7 @@ public class UpdateProducts extends AppCompatActivity {
             public void onClick(View view) {
                 sqlite.execSQL("DELETE FROM products WHERE _id = " + Integer.valueOf(extra_id));
                 Toast.makeText(UpdateProducts.this, "Удалено!", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 
