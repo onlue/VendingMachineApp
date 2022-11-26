@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,6 +30,7 @@ public class VendingsOption extends AppCompatActivity {
     customVendingAdapter adapter;
 
     Button backButton;
+    ImageView updateMachines;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,29 @@ public class VendingsOption extends AppCompatActivity {
         vending_SV = findViewById(R.id.vendings_search);
 
         backButton = findViewById(R.id.backMainVendings);
+        updateMachines = findViewById(R.id.updatevendingmachines);
+
+        updateMachines.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                id = new ArrayList<>();
+                name = new ArrayList<>();
+                location = new ArrayList<>();
+                capacity = new ArrayList<>();
+
+                SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+                long userid = sharedPreferences.getLong("user_id", -1);
+
+                Cursor cursor = mydb.readVendingsData(userid);
+                    while (cursor.moveToNext()) {
+                        id.add(cursor.getString(0));
+                        capacity.add(cursor.getString(2));
+                        name.add(cursor.getString(3));
+                        location.add(cursor.getString(4));
+                    }
+                adapter.filterLists(id,name,capacity,location);
+            }
+        });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override

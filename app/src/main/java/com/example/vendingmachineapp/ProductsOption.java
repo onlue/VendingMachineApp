@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ public class ProductsOption extends AppCompatActivity {
     ArrayList<byte[]> images;
     customProductAdapter adapter;
 
+    ImageView updateProducts;
     Button btn;
 
     @Override
@@ -38,6 +40,29 @@ public class ProductsOption extends AppCompatActivity {
         setContentView(R.layout.products_layout);
 
         btn = findViewById(R.id.backMainProduct);
+        updateProducts = findViewById(R.id.updateProduct);
+
+        updateProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                id = new ArrayList<>();
+                name = new ArrayList<>();
+                desc = new ArrayList<>();
+                price = new ArrayList<>();
+                images = new ArrayList<byte[]>();
+
+                Cursor cursor = mydb.readProductsData();
+                    while (cursor.moveToNext()) {
+                        id.add(cursor.getString(0));
+                        name.add(cursor.getString(1));
+                        desc.add(cursor.getString(2));
+                        price.add(cursor.getString(3));
+                        images.add(cursor.getBlob(7));
+                    }
+                cursor.close();
+                adapter.filterLists(id,name,price,desc,images);
+            }
+        });
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -71,7 +71,7 @@ public class customProductAdapter extends RecyclerView.Adapter<customProductAdap
             holder.product_description_text.setText(String.valueOf(desc.get(position)));
             holder.product_price_text.setText(String.valueOf(price.get(position)));
             Bitmap bmp = BitmapFactory.decodeByteArray(images.get(position), 0, images.get(position).length);
-            holder.image_layout.setImageBitmap(Bitmap.createScaledBitmap(bmp,80, 80, false));
+            holder.image_layout.setImageBitmap(Bitmap.createScaledBitmap(bmp,95, 95, false));
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
