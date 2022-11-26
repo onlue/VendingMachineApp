@@ -1,15 +1,19 @@
 package com.example.vendingmachineapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,11 +50,22 @@ public class customVendingInfoAdapter extends RecyclerView.Adapter<customVending
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyVendingInfoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyVendingInfoViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.product_text.setText(String.valueOf(productId.get(position)));
         holder.id_text.setText(String.valueOf(id.get(position)));
         holder.amoutnAvailable_text.setText(String.valueOf(amountAvailable.get(position)));
         holder.machine_text.setText(String.valueOf(vendingMachineId.get(position)));
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context,UpdateVendingsInfo.class);
+                intent.putExtra("id", String.valueOf(id.get(position)));
+                intent.putExtra("machine", String.valueOf(vendingMachineId.get(position)));
+                intent.putExtra("product", String.valueOf(productId.get(position)));
+                intent.putExtra("amount", String.valueOf(amountAvailable.get(position)));
+                activity.startActivity(intent);
+            }
+        });
     }
 
     @Override

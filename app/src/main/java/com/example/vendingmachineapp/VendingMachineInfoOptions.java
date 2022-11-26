@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,11 +30,37 @@ public class VendingMachineInfoOptions extends AppCompatActivity {
     customVendingInfoAdapter adapter;
 
     Button backButton;
+    ImageView updateBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vending_machine_info_options);
+
+        updateBase = findViewById(R.id.updateVendingsInfo);
+
+        updateBase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                id = new ArrayList<>();
+                nameMachine = new ArrayList<>();
+                productName = new ArrayList<>();
+                capacity = new ArrayList<>();
+
+                SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+                long userid = sharedPreferences.getLong("user_id", -1);
+
+                Cursor cursor = mydb.readVendingInfoData(userid);
+
+                    while (cursor.moveToNext()) {
+                        id.add(cursor.getString(0));
+                        capacity.add(cursor.getString(2));
+                        nameMachine.add(cursor.getString(3));
+                        productName.add(cursor.getString(1));
+                    }
+                adapter.filterLists(id,nameMachine,productName,capacity);
+            }
+        });
 
         backButton = findViewById(R.id.backMainVendingsInfo);
 
@@ -93,7 +120,7 @@ public class VendingMachineInfoOptions extends AppCompatActivity {
             Toast.makeText(this, "Ничего не найдено!", Toast.LENGTH_SHORT).show();
         }
         else{
-            adapter.filterLists(idFilter,nameFilter,capacityFilter,locationFilter);
+            adapter.filterLists(idFilter,nameFilter,locationFilter,capacityFilter);
         }
     }
 
@@ -123,8 +150,6 @@ public class VendingMachineInfoOptions extends AppCompatActivity {
                 productName.add(cursor.getString(1));
             }
         }
-
-
 
         adapter = new customVendingInfoAdapter(VendingMachineInfoOptions.this, VendingMachineInfoOptions.this, id, nameMachine, productName, capacity);
         products_RV.setAdapter(adapter);

@@ -88,9 +88,12 @@ public class AddVendingsInfo extends AppCompatActivity {
                 query = "select SUM(AmountInStock) from machine_capacity where machine_id = " + tempMachineId;
                 cursor = db.rawQuery(query,null);
                 cursor.moveToFirst();
-                int machine_current_capacity = cursor.getInt(0);
+                if(cursor.getCount() != 0){
+                    Toast.makeText(AddVendingsInfo.this, "Данный товар уже есть в таблице, обновите наличие!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                if(Integer.valueOf(addCapity.getText().toString()) + machine_current_capacity > machine_capacity){
+                if(Integer.valueOf(addCapity.getText().toString()) > machine_capacity){
                     Toast.makeText(AddVendingsInfo.this, "Невозможно добавить, машина переполнена!", Toast.LENGTH_SHORT).show();
                     return;
                 }
