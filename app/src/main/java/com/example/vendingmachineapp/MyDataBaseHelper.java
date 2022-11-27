@@ -57,13 +57,14 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_SERVICESDESCID = "_id";
     public static final String COLUMN_SERVICESDESCNAME = "name";
     public static final String COLUMN_SERVICESDESCRIPTION = "servicesdesc";
+    public static final String COLUMN_SERVICESDESCPRICE = "price";
 
     public static final String TABLE_NAME_SERVICES = "services";
     public static final String COLUMN_SERVICESID = "_id";
     public static final String COLUMN_SERVICEID = "idServ";
     public static final String COLUMN_SERVICESCUSTOMERID = "servicesCustomer";
     public static final String COLUMN_SERVICEMACHINEID = "servicesMachine";
-    public static final String COLUMN_SERVICEDATE = "date";
+    public static final String COLUMN_SERVICEDATE = "mydate";
 
     public static final String TABLE_NAME_SALE = "sale";
     public static final  String COLUMN_SALEID = "_id";
@@ -123,7 +124,8 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         query = "CREATE TABLE " + TABLE_NAME_SERVICESDESC + "(" +
                 COLUMN_SERVICESDESCID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_SERVICESDESCNAME + " TEXT, " +
-                COLUMN_SERVICESDESCRIPTION + " TEXT);";
+                COLUMN_SERVICESDESCRIPTION + " TEXT, "+
+                COLUMN_SERVICESDESCPRICE + " TEXT);";
         db.execSQL(query);
 
         query = "CREATE TABLE " + TABLE_NAME_SERVICES + "(" +
@@ -193,14 +195,15 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void AddServicesDesc(String name, String description){
+    public void AddServicesDesc(String name, String description,String price){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_SERVICESDESCNAME,name);
         values.put(COLUMN_SERVICESDESCRIPTION,description);
+        values.put(COLUMN_SERVICESDESCPRICE,price);
 
-        long result = db.insert(TABLE_NAME_MACHINESCAPACITY, null, values);
+        long result = db.insert(TABLE_NAME_SERVICESDESC, null, values);
 
         if (result == -1) {
             Toast.makeText(context, "Ошибка добавления!", Toast.LENGTH_SHORT).show();
@@ -451,7 +454,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor readServices(long userId){
-        String query = "SELECT * FROM "  + TABLE_NAME_SERVICESDESC + " WHERE " + COLUMN_SERVICESCUSTOMERID + " = " + userId;
+        String query = "SELECT * FROM "  + TABLE_NAME_SERVICES + " WHERE " + COLUMN_SERVICESCUSTOMERID + " = " + userId;
 
         SQLiteDatabase db = this.getReadableDatabase();
 

@@ -16,6 +16,27 @@
         android:theme="@style/Theme.VendingMachineApp"
         tools:targetApi="31">
         <activity
+            android:name=".ServiceDescUpdate"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".AddServicesDesc"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ServicesDescOption"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".UpdateVendingsInfo"
             android:exported="false">
             <meta-data

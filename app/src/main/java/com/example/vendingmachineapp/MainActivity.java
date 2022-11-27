@@ -98,6 +98,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.ServicesDesc_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,ServicesDescOption.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
