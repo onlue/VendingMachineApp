@@ -73,8 +73,8 @@ public class ServicesDescOption extends AppCompatActivity {
                 Cursor cursor = mydb.readServicesData();
                     while (cursor.moveToNext()) {
                         id.add(cursor.getString(0));
-                        desc.add(cursor.getString(1));
-                        name.add(cursor.getString(2));
+                        desc.add(cursor.getString(2));
+                        name.add(cursor.getString(1));
                         price.add(cursor.getString(3));
                 }
                 adapter.filterLists(id,name,desc,price);
@@ -126,8 +126,8 @@ public class ServicesDescOption extends AppCompatActivity {
         } else {
             while (cursor.moveToNext()) {
                 id.add(cursor.getString(0));
-                name.add(cursor.getString(2));
-                desc.add(cursor.getString(1));
+                desc.add(cursor.getString(2));
+                name.add(cursor.getString(1));
                 price.add(cursor.getString(3));
             }
         }

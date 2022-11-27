@@ -71,7 +71,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     public static final  String COLUMN_SALEMACHINEID = "machineId";
     public static final  String COLUMN_SALEPRODUCTID = "productId";
     public static final  String COLUMN_SALEAMOUNT = "amount";
-    public static final  String COLUMN_SALEDATE = "date";
+    public static final  String COLUMN_SALEDATE = "mydate";
     public static final  String COLUMN_SALECUSTOMER = "saleCustomer";
 
     public MyDataBaseHelper(@Nullable Context context) {
@@ -186,7 +186,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_SERVICEMACHINEID,machineId);
         values.put(COLUMN_SERVICEDATE,date);
 
-        long result = db.insert(TABLE_NAME_MACHINESCAPACITY, null, values);
+        long result = db.insert(TABLE_NAME_SERVICES, null, values);
 
         if (result == -1) {
             Toast.makeText(context, "Ошибка добавления!", Toast.LENGTH_SHORT).show();
@@ -411,6 +411,20 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor readServiceDescData(){
+        String query = "SELECT "+ COLUMN_SERVICESDESCNAME + ", " + COLUMN_SERVICESDESCID + " FROM " + TABLE_NAME_SERVICESDESC;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+
+        if(db != null){
+            cursor = db.rawQuery(query,null);
+        }
+
+        return cursor;
+    }
+
     public Cursor readMachineInfoDataForSpinner(long userId){
         String query = "select vending_machines.name,vending_machines._id from vending_machines inner join Authorization on vending_machines.customerid = Authorization._id where Authorization._id = " + userId;
 
@@ -454,7 +468,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor readServices(long userId){
-        String query = "SELECT * FROM "  + TABLE_NAME_SERVICES + " WHERE " + COLUMN_SERVICESCUSTOMERID + " = " + userId;
+        String query = "SELECT services._id,servicesDesc.name,vending_machines.name,Authorization.fio FROM services INNER JOIN servicesDesc ON services.idServ = servicesdesc._id INNER JOIN vending_machines ON vending_machines._id = services.servicesMachine INNER JOIN Authorization ON Authorization._id = services.servicesCustomer" + " WHERE " + TABLE_NAME_SERVICES + "."+COLUMN_SERVICESCUSTOMERID + " = " + userId;
 
         SQLiteDatabase db = this.getReadableDatabase();
 

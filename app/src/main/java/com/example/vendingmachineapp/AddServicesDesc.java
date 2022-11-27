@@ -30,8 +30,8 @@ public class AddServicesDesc extends AppCompatActivity {
     }
 
     public void init(){
-        desc = findViewById(R.id.servicesdesc_name_add);
-        name = findViewById(R.id.servicesdesc_desc_add);
+        desc = findViewById(R.id.servicesdesc_desc_add);
+        name = findViewById(R.id.servicesdesc_name_add);
         price = findViewById(R.id.servicesdesc_price_add);
         addButton = findViewById(R.id.addServicesDescBtn);
     }

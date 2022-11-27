@@ -78,17 +78,18 @@ public class AddVendingsInfo extends AppCompatActivity {
                 }
                 String tempMachineId = machineId.get(Integer.valueOf(String.valueOf(machineSpinner.getSelectedItemId())));
                 String tempProductId = productId.get(Integer.valueOf(String.valueOf(productSpinner.getSelectedItemId())));
-                String query = "select capacity from vending_machines where _id = " + tempMachineId;
+
                 Cursor cursor = null;
                 SQLiteDatabase db = mydb.getWritableDatabase();
+                String query = "select capacity from vending_machines where _id = " + tempMachineId;
                 cursor = db.rawQuery(query,null);
                 cursor.moveToFirst();
                 int machine_capacity = cursor.getInt(0);
 
-                query = "select SUM(AmountInStock) from machine_capacity where machine_id = " + tempMachineId;
+                query = "select COUNT(*) from machine_capacity where machine_id = " + tempMachineId;
                 cursor = db.rawQuery(query,null);
                 cursor.moveToFirst();
-                if(cursor.getCount() != 0){
+                if(cursor.getInt(0) > 0){
                     Toast.makeText(AddVendingsInfo.this, "Данный товар уже есть в таблице, обновите наличие!", Toast.LENGTH_SHORT).show();
                     return;
                 }

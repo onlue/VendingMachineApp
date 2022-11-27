@@ -54,13 +54,13 @@ public class VendingsOption extends AppCompatActivity {
                 long userid = sharedPreferences.getLong("user_id", -1);
 
                 Cursor cursor = mydb.readVendingsData(userid);
-                    while (cursor.moveToNext()) {
-                        id.add(cursor.getString(0));
-                        capacity.add(cursor.getString(2));
-                        name.add(cursor.getString(3));
-                        location.add(cursor.getString(4));
-                    }
-                adapter.filterLists(id,name,capacity,location);
+                while (cursor.moveToNext()) {
+                    id.add(cursor.getString(0));
+                    capacity.add(cursor.getString(2));
+                    name.add(cursor.getString(3));
+                    location.add(cursor.getString(4));
+                }
+                adapter.filterLists(id, name, capacity, location);
             }
         });
 
@@ -100,25 +100,24 @@ public class VendingsOption extends AppCompatActivity {
     }
 
     private void filter(String newText) {
-        ArrayList idFilter,nameFilter,locationFilter,capacityFilter;
+        ArrayList idFilter, nameFilter, locationFilter, capacityFilter;
         idFilter = new ArrayList<>();
         nameFilter = new ArrayList<>();
         locationFilter = new ArrayList<>();
         capacityFilter = new ArrayList<>();
 
-        for (int i = 0; i < id.size(); i++){
-            if(name.get(i).toLowerCase().contains(newText.toLowerCase(Locale.ROOT))){
+        for (int i = 0; i < id.size(); i++) {
+            if (name.get(i).toLowerCase().contains(newText.toLowerCase(Locale.ROOT))) {
                 idFilter.add(id.get(i));
                 nameFilter.add(name.get(i));
                 locationFilter.add(location.get(i));
                 capacityFilter.add(capacity.get(i));
             }
         }
-        if(idFilter.isEmpty()){
+        if (idFilter.isEmpty()) {
             Toast.makeText(this, "Ничего не найдено!", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            adapter.filterLists(idFilter,nameFilter,capacityFilter,locationFilter);
+        } else {
+            adapter.filterLists(idFilter, nameFilter, capacityFilter, locationFilter);
         }
     }
 
