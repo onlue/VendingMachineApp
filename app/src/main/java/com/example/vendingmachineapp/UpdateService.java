@@ -23,13 +23,14 @@ import java.util.Calendar;
 public class UpdateService extends AppCompatActivity {
 
     EditText date;
-    TextView address,desc;
+    TextView address, desc;
 
-    Spinner service_spin,machine_spin;
+    Spinner service_spin, machine_spin;
 
     MyDataBaseHelper myDataBaseHelper;
 
-    Button del,update,dateBtn;
+    Button del, update, dateBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,13 +50,13 @@ public class UpdateService extends AppCompatActivity {
         long userid = sharedPreferences.getLong("user_id", -1);
 
         Cursor cursor = myDataBaseHelper.readMachineInfoDataForSpinner(userid);
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             machinesName.add(cursor.getString(0));
             machineId.add(cursor.getString(1));
         }
 
         cursor = myDataBaseHelper.readServiceDescData();
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             serviceName.add(cursor.getString(0));
             serviceId.add(cursor.getString(1));
         }
@@ -70,19 +71,19 @@ public class UpdateService extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         service_spin.setAdapter(adapterSpin_);
 
-        int idMachine = 0,IdService = 0;
-        String extra_machine_id,extra_service_id;
+        int idMachine = 0, IdService = 0;
+        String extra_machine_id, extra_service_id;
         extra_machine_id = getIntent().getStringExtra("extra_machine_id");
         extra_service_id = getIntent().getStringExtra("extra_service_id");
 
-        for (int i = 0; i < machinesName.size(); i+=1){
-            if(machinesName.get(i).contains(extra_machine_id)){
+        for (int i = 0; i < machinesName.size(); i += 1) {
+            if (machinesName.get(i).contains(extra_machine_id)) {
                 idMachine = i;
             }
         }
 
-        for (int i = 0; i < serviceName.size(); i+=1){
-            if(serviceName.get(i).contains(extra_service_id)){
+        for (int i = 0; i < serviceName.size(); i += 1) {
+            if (serviceName.get(i).contains(extra_service_id)) {
                 IdService = i;
             }
         }
@@ -90,15 +91,15 @@ public class UpdateService extends AppCompatActivity {
         service_spin.setSelection(IdService);
         machine_spin.setSelection(idMachine);
 
-        cursor = db.rawQuery("SELECT servicesdesc FROM servicesDesc WHERE _id = " + serviceId.get(IdService),null);
+        cursor = db.rawQuery("SELECT servicesdesc FROM servicesDesc WHERE _id = " + serviceId.get(IdService), null);
         cursor.moveToFirst();
         desc.setText(cursor.getString(0));
 
-        cursor = db.rawQuery("SELECT location FROM vending_machines WHERE _id = " + machineId.get(idMachine),null);
+        cursor = db.rawQuery("SELECT location FROM vending_machines WHERE _id = " + machineId.get(idMachine), null);
         cursor.moveToFirst();
         address.setText(cursor.getString(0));
 
-        cursor = db.rawQuery("SELECT mydate FROM services WHERE _id = " + getIntent().getStringExtra("id"),null);
+        cursor = db.rawQuery("SELECT mydate FROM services WHERE _id = " + getIntent().getStringExtra("id"), null);
         cursor.moveToFirst();
         date.setText(cursor.getString(0));
 
@@ -133,7 +134,7 @@ public class UpdateService extends AppCompatActivity {
 
     }
 
-    public void callDatePicker(){
+    public void callDatePicker() {
         int mYear, mMonth, mDay;
         final Calendar cal = Calendar.getInstance();
         mYear = cal.get(Calendar.YEAR);
@@ -144,10 +145,10 @@ public class UpdateService extends AppCompatActivity {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        String day,month;
-                        monthOfYear +=1;
-                        month = monthOfYear < 10 ? "0"+monthOfYear : String.valueOf(monthOfYear);
-                        day = dayOfMonth < 10 ? "0"+dayOfMonth : String.valueOf(dayOfMonth);
+                        String day, month;
+                        monthOfYear += 1;
+                        month = monthOfYear < 10 ? "0" + monthOfYear : String.valueOf(monthOfYear);
+                        day = dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth);
                         String editTextDateParam = year + "-" + month + "-" + day;
                         date.setText(editTextDateParam);
                     }
@@ -155,7 +156,7 @@ public class UpdateService extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    public void init(){
+    public void init() {
         dateBtn = findViewById(R.id.dateButtonUpdate);
         date = findViewById(R.id.date_text_update);
         address = findViewById(R.id.locationAdres);
