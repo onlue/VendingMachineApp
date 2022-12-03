@@ -1,7 +1,9 @@
 package com.example.vendingmachineapp;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -329,7 +331,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void Authorize(String Login,String Password){
+    public boolean Authorize(String Login, String Password){
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = null;
@@ -339,7 +341,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME_LOGIN + " WHERE " + COLUMN_LOGIN + " = " + "'" + Login + "'",null);
         if(cursor.getCount() <= 0){
             Toast.makeText(context, "Данного пользователя не существует!", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
 
         cursor.moveToFirst();
@@ -362,9 +364,11 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
             editor.putLong("user_id",id);
             editor.putBoolean("isLogined",true);
             editor.apply();
+            return true;
         }
         else{
             Toast.makeText(context, "Неправильный логин или пароль!", Toast.LENGTH_SHORT).show();
+            return false;
         }
 
     }

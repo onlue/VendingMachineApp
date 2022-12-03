@@ -1,6 +1,7 @@
 package com.example.vendingmachineapp;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.view.GravityCompat;
@@ -8,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -26,7 +28,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView hello;
+    TextView hello,logout;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +38,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
         hello = findViewById(R.id.helloText);
+        logout = findViewById(R.id.logout);
         boolean temp = sharedPreferences.getBoolean("isLogined", false);
         if (temp) {
             hello.setText("Здравствуйте, " + sharedPreferences.getString("user_fio", "") + "!");
@@ -47,7 +52,15 @@ public class MainActivity extends AppCompatActivity {
         else{
             findViewById(R.id.authBtn).setVisibility(View.VISIBLE);
             findViewById(R.id.regBtn).setVisibility(View.VISIBLE);
+            logout.setVisibility(View.INVISIBLE);
         }
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createTwoButtonsAlertDialog("Выйти?","Желаете выйти?");
+            }
+        });
 
         findViewById(R.id.GoToProfile).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
                 if(temp){
                     Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                     startActivity(intent);
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Авторизуйтсь!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -135,6 +151,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void createTwoButtonsAlertDialog(String title, String content) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(title);
+        builder.setMessage(content);
+        builder.setNegativeButton("Нет",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+
+                    }
+                });
+        builder.setPositiveButton("Да",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear();
+                        editor.apply();
+                        finishAffinity();
+                    }
+                });
+        builder.show();
+    }
 
 }
 
