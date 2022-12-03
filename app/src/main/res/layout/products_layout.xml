@@ -22,15 +22,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            android:textColor="@color/white"
-            android:background="@drawable/buttonbg"
             android:id="@+id/backMainProduct"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="61dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="Назад" />
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/buttonbg"
+            android:text="Назад"
+            android:textColor="@color/white" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/product_search"
@@ -93,6 +93,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonSort1"
+            android:text="По возрастанию цены"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="52dp"
@@ -100,6 +101,39 @@
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonSort2"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="По убыванию цены"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSort1" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonSort3"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="По возрастанию веса"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSort2" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonSort4"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="По убыванию веса"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSort3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.navigation.NavigationView>
 

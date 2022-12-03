@@ -77,67 +77,116 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginTop="168dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/product_menu"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/buttonbg"
                 android:text="Продукты"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.122" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/vendings_menu"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:background="@drawable/buttonbg"
-                android:text="Автоматы"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/product_menu" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/VendingInfo_menu"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:background="@drawable/buttonbg"
-                android:text="Заполненность"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vendings_menu" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/ServicesDesc_menu"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
-                android:background="@drawable/buttonbg"
-                android:text="Описание Услуг"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/VendingInfo_menu" />
+                app:layout_constraintVertical_bias="0.308" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/Services_menu"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="25dp"
                 android:background="@drawable/buttonbg"
                 android:text="Услуги"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ServicesDesc_menu" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/ServicesDesc_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/buttonbg"
+                android:text="Описание Услуг"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/VendingInfo_menu" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/VendingInfo_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/buttonbg"
+                android:text="Заполненность"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vendings_menu" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/vendings_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/buttonbg"
+                android:text="Автоматы"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/product_menu" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:src="@drawable/pic_prof_background"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/ProfileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="164dp"
+                android:layout_marginTop="17dp"
+                android:textSize="20dp"
+                android:textColor="#75FFEB"
+                android:text="TextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/GoToProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="164dp"
+                android:layout_marginTop="108dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Профиль"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.navigation.NavigationView>

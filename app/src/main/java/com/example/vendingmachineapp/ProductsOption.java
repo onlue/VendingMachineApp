@@ -2,6 +2,7 @@ package com.example.vendingmachineapp;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ public class ProductsOption extends AppCompatActivity {
     RecyclerView products_RV;
     FloatingActionButton addProductsButton;
 
+
     MyDataBaseHelper mydb;
     ArrayList<String> id, name, desc, price;
     ArrayList<byte[]> images;
@@ -35,12 +37,46 @@ public class ProductsOption extends AppCompatActivity {
     ImageView updateProducts;
     Button btn;
 
+    Button sortPriceASC,sortPriceDESC,sortWeightASC,sortWeightDESC;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.products_layout);
 
         DrawerLayout drawerLayout = findViewById(R.id.ProductDrawer);
+
+        sortPriceASC = findViewById(R.id.buttonSort1);
+        sortPriceASC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SortFunction("SELECT * FROM products ORDER BY price");
+            }
+        });
+
+        sortPriceDESC = findViewById(R.id.buttonSort2);
+        sortPriceDESC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SortFunction("SELECT * FROM products ORDER BY price DESC");
+            }
+        });
+
+        sortWeightASC = findViewById(R.id.buttonSort3);
+        sortWeightASC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SortFunction("SELECT * FROM products ORDER BY weight");
+            }
+        });
+
+        sortWeightDESC = findViewById(R.id.buttonSort4);
+        sortWeightDESC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SortFunction("SELECT * FROM products ORDER BY weight DESC");
+            }
+        });
 
         btn = findViewById(R.id.backMainProduct);
         updateProducts = findViewById(R.id.updateProduct);
@@ -55,15 +91,15 @@ public class ProductsOption extends AppCompatActivity {
                 images = new ArrayList<byte[]>();
 
                 Cursor cursor = mydb.readProductsData();
-                    while (cursor.moveToNext()) {
-                        id.add(cursor.getString(0));
-                        name.add(cursor.getString(1));
-                        desc.add(cursor.getString(2));
-                        price.add(cursor.getString(3));
-                        images.add(cursor.getBlob(7));
-                    }
+                while (cursor.moveToNext()) {
+                    id.add(cursor.getString(0));
+                    name.add(cursor.getString(1));
+                    desc.add(cursor.getString(2));
+                    price.add(cursor.getString(3));
+                    images.add(cursor.getBlob(7));
+                }
                 cursor.close();
-                adapter.filterLists(id,name,price,desc,images);
+                adapter.filterLists(id, name, price, desc, images);
             }
         });
 
@@ -101,7 +137,7 @@ public class ProductsOption extends AppCompatActivity {
 
         mydb = new MyDataBaseHelper(ProductsOption.this);
         storeProductsDataInArrays();
-        adapter = new customProductAdapter(ProductsOption.this, ProductsOption.this, name, price, id, desc,images);
+        adapter = new customProductAdapter(ProductsOption.this, ProductsOption.this, name, price, id, desc, images);
         products_RV.setAdapter(adapter);
         products_RV.setLayoutManager(new LinearLayoutManager(ProductsOption.this));
     }
@@ -115,8 +151,8 @@ public class ProductsOption extends AppCompatActivity {
         priceFilter = new ArrayList<>();
         imagesFilter = new ArrayList<>();
 
-        for (int i = 0; i < id.size(); i++){
-            if(name.get(i).toLowerCase().contains(newText.toLowerCase(Locale.ROOT))){
+        for (int i = 0; i < id.size(); i++) {
+            if (name.get(i).toLowerCase().contains(newText.toLowerCase(Locale.ROOT))) {
                 idFilter.add(id.get(i));
                 nameFilter.add(name.get(i));
                 descFilter.add(desc.get(i));
@@ -124,11 +160,10 @@ public class ProductsOption extends AppCompatActivity {
                 imagesFilter.add(images.get(i));
             }
         }
-        if(idFilter.isEmpty()){
+        if (idFilter.isEmpty()) {
             Toast.makeText(this, "Ничего не найдено!", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            adapter.filterLists(idFilter,nameFilter,priceFilter,descFilter,images);
+        } else {
+            adapter.filterLists(idFilter, nameFilter, priceFilter, descFilter, images);
         }
     }
 
@@ -153,6 +188,26 @@ public class ProductsOption extends AppCompatActivity {
             }
         }
         cursor.close();
+    }
+
+    public void SortFunction(String query) {
+        SQLiteDatabase db = mydb.getReadableDatabase();
+        id = new ArrayList<>();
+        name = new ArrayList<>();
+        desc = new ArrayList<>();
+        price = new ArrayList<>();
+        images = new ArrayList<byte[]>();
+
+        Cursor cursor = db.rawQuery(query,null);
+        while (cursor.moveToNext()) {
+            id.add(cursor.getString(0));
+            name.add(cursor.getString(1));
+            desc.add(cursor.getString(2));
+            price.add(cursor.getString(3));
+            images.add(cursor.getBlob(7));
+        }
+        cursor.close();
+        adapter.filterLists(id,name,price,desc,images);
     }
 
 }

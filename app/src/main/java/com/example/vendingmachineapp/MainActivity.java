@@ -26,13 +26,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView products_RV;
-    FloatingActionButton addProductsButton;
-
-    MyDataBaseHelper mydb;
-    ArrayList<String> id, name, desc, price;
-    customProductAdapter adapter;
-
     TextView hello;
 
     @Override
@@ -46,7 +39,25 @@ public class MainActivity extends AppCompatActivity {
         boolean temp = sharedPreferences.getBoolean("isLogined", false);
         if (temp) {
             hello.setText("Здравствуйте, " + sharedPreferences.getString("user_fio", "") + "!");
+            findViewById(R.id.authBtn).setVisibility(View.INVISIBLE);
+            findViewById(R.id.regBtn).setVisibility(View.INVISIBLE);
+            TextView loginText = findViewById(R.id.ProfileName);
+            loginText.setText(sharedPreferences.getString("user_login","ERROR"));
         }
+        else{
+            findViewById(R.id.authBtn).setVisibility(View.VISIBLE);
+            findViewById(R.id.regBtn).setVisibility(View.VISIBLE);
+        }
+
+        findViewById(R.id.GoToProfile).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(temp){
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
         DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
 
