@@ -28,8 +28,6 @@ public class AddSale extends AppCompatActivity {
 
     ArrayList<String> productName, productId;
     ArrayList<String> machinesName, machineId;
-    
-    Button add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +57,29 @@ public class AddSale extends AppCompatActivity {
                     Toast.makeText(AddSale.this, "Введите количество!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                MyDataBaseHelper db = new MyDataBaseHelper(AddSale.this);
+
+                MyDataBaseHelper dataBaseHelper = new MyDataBaseHelper(AddSale.this);
+                SQLiteDatabase sqlite = dataBaseHelper.getWritableDatabase();
+                String tempMachine = machineId.get(machine_spin.getSelectedItemPosition());
+                String tempProduct = productId.get(product_spin.getSelectedItemPosition());
+                Cursor cursor = sqlite.rawQuery("SELECT AmountInStock from machine_capacity where machine_id = " + tempMachine + " AND product_id = " + tempProduct,null);
+                cursor.moveToFirst();
+
+                int tempAmount = cursor.getInt(0);
+
+                if(tempAmount - Integer.valueOf(amount.getText().toString()) < 0){
+                    Toast.makeText(AddSale.this, "Невозможно добавить продажу, превышено доступное количество", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else{
+                    int newStock = tempAmount - Integer.valueOf(amount.getText().toString());
+                    sqlite.execSQL("UPDATE machine_capacity SET AmountInStock = '" + newStock + "' WHERE machine_id = " + tempMachine + " AND product_id = " + tempProduct);
+                }
 
                 SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
                 long userid = sharedPreferences.getLong("user_id", -1);
 
-                db.AddSale(machineId.get(machine_spin.getSelectedItemPosition()),productId.get(product_spin.getSelectedItemPosition()),amount.getText().toString(),date_edit.getText().toString(),String.valueOf(userid));
+                dataBaseHelper.AddSale(tempMachine,tempProduct,amount.getText().toString(),date_edit.getText().toString(),String.valueOf(userid));
             }
         });
 
