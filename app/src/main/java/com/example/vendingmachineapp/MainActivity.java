@@ -77,6 +77,14 @@ public class MainActivity extends AppCompatActivity {
 
         DrawerLayout drawerLayout = findViewById(R.id.drawerlayout);
 
+        findViewById(R.id.sale_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SaleOption.class);
+                startActivity(intent);
+            }
+        });
+
         findViewById(R.id.authBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

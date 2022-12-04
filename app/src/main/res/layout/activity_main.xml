@@ -116,6 +116,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/ServicesDesc_menu" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/sale_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/buttonbg"
+                android:text="Продажи"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Services_menu" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/ServicesDesc_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

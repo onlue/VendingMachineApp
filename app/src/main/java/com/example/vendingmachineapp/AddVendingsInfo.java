@@ -86,7 +86,7 @@ public class AddVendingsInfo extends AppCompatActivity {
                 cursor.moveToFirst();
                 int machine_capacity = cursor.getInt(0);
 
-                query = "select COUNT(*) from machine_capacity where machine_id = " + tempMachineId;
+                query = "select COUNT(*) from machine_capacity where machine_id = " + tempMachineId + " AND product_id = " + tempProductId;
                 cursor = db.rawQuery(query,null);
                 cursor.moveToFirst();
                 if(cursor.getInt(0) > 0){
@@ -94,8 +94,13 @@ public class AddVendingsInfo extends AppCompatActivity {
                     return;
                 }
 
-                if(Integer.valueOf(addCapity.getText().toString()) > machine_capacity){
-                    Toast.makeText(AddVendingsInfo.this, "Невозможно добавить, машина переполнена!", Toast.LENGTH_SHORT).show();
+                query = "SELECT SUM(AmountInStock) FROM machine_capacity WHERE machine_id = " + tempMachineId;
+                cursor = db.rawQuery(query,null);
+                cursor.moveToFirst();
+                int machine_current_capacity = cursor.getInt(0);
+
+                if(Integer.valueOf(addCapity.getText().toString()) + machine_current_capacity > machine_capacity){
+                    Toast.makeText(AddVendingsInfo.this, "Машина переполнена! Заполненность " + machine_current_capacity + "/" + machine_capacity , Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else{

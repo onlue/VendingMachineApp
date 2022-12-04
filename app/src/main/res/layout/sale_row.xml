@@ -2,29 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/VendingsMainLayout"
+    android:id="@+id/saleMainLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:alpha="1"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <androidx.cardview.widget.CardView
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         app:cardElevation="10dp"
         app:cardCornerRadius="20dp">
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-
             android:layout_width="match_parent"
-            android:layout_height="125dp"
-            android:background="#f7f7f7"
-            android:outlineSpotShadowColor="@color/black"
-            android:padding="5dp">
+            android:layout_height="144dp"
+            android:layout_marginBottom="10dp">
 
             <androidx.constraintlayout.widget.Barrier
                 android:layout_width="match_parent"
@@ -35,7 +34,7 @@
                 tools:layout_editor_absoluteY="79dp" />
 
             <TextView
-                android:id="@+id/vendings_id_text"
+                android:id="@+id/sale_id_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -48,54 +47,63 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/vendings_name_text"
+                android:id="@+id/saleMachine_text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="8dp"
                 android:text="TextView"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/sale_id_text"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/vendings_location_text"
+                android:id="@+id/saleProduct_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginStart="28dp"
                 android:text="TextView"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vendings_name_text"
-                app:layout_constraintVertical_bias="0.363" />
+                app:layout_constraintStart_toEndOf="@+id/sale_id_text"
+                app:layout_constraintTop_toBottomOf="@+id/saleMachine_text_name"
+                app:layout_constraintVertical_bias="0.142" />
 
             <TextView
-                android:id="@+id/vendings_capacity_text"
+                android:id="@+id/saleAmount_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginBottom="2dp"
                 android:text="TextView"
                 android:textColor="#2196F3"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView11"
+                app:layout_constraintStart_toEndOf="@+id/textView14"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.981" />
+                app:layout_constraintVertical_bias="0.592" />
 
             <TextView
-                android:id="@+id/textView11"
+                android:fontFamily="sans-serif-black"
+                android:id="@+id/saleDate_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:text="Вместимость:"
+                android:layout_marginStart="56dp"
+                android:text="TextView"
+                android:textColor="#0B7AD3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.962" />
+                app:layout_constraintVertical_bias="0.872" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:text="Продано:"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.592" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
 </LinearLayout>

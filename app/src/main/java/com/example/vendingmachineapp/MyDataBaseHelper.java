@@ -170,7 +170,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_SALEMACHINEID,machineId);
         values.put(COLUMN_SALEDATE,date);
 
-        long result = db.insert(TABLE_NAME_MACHINESCAPACITY, null, values);
+        long result = db.insert(TABLE_NAME_SALE, null, values);
 
         if (result == -1) {
             Toast.makeText(context, "Ошибка добавления!", Toast.LENGTH_SHORT).show();
@@ -371,6 +371,20 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
             return false;
         }
 
+    }
+
+    public Cursor readSaleData(long userId){
+        String query = "select sale._id,vending_machines.name,products.name,sale.mydate,sale.amount from sale inner join vending_machines on sale.machineId = vending_machines._id inner join products on sale.productId = products._id" + " WHERE " + COLUMN_SALECUSTOMER + " = " + userId;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+
+        if (db != null) {
+            cursor = db.rawQuery(query, null);
+        }
+
+        return cursor;
     }
 
     public Cursor readProductsData() {
