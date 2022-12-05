@@ -40,6 +40,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_FIO = "fio";
     public static final String COLUMN_EMAIL = "mail";
+    public static final String COLUMN_PROFILEIMG = "image";
 
     public static final String TABLE_NAME_MACHINES = "vending_machines";
     public static final String COLUMN_VENDINGMACHINEID = "_id";
@@ -103,7 +104,8 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
                 COLUMN_LOGIN + " TEXT, " +
                 COLUMN_PASSWORD + " TEXT," +
                 COLUMN_FIO + " TEXT, " +
-                COLUMN_EMAIL + " TEXT);";
+                COLUMN_EMAIL + " TEXT," +
+                COLUMN_PROFILEIMG + " BLOB);";
 
         db.execSQL(query);
 
@@ -255,7 +257,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void AddAccount(String login, String password, String FIO, String mail) {
+    public void AddAccount(String login, String password, String FIO, String mail,byte[] image) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -263,6 +265,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PASSWORD, password);
         values.put(COLUMN_FIO, FIO);
         values.put(COLUMN_EMAIL, mail);
+        values.put(COLUMN_PROFILEIMG, image);
 
         Cursor cursor = null;
         if (login.trim().length() == 0) {

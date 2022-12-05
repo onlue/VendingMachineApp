@@ -5,18 +5,23 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class SaleOption extends AppCompatActivity {
@@ -29,7 +34,8 @@ public class SaleOption extends AppCompatActivity {
     ArrayList<String> amount, id, machine, product,date;
     customSaleAdapter adapter;
 
-    Button backButton;
+    Button backButton, dateOneBtn, dateTwoBtn, submitDates;
+    TextView dateOne, dateTwo;
     ImageView updateSale;
 
     @Override
@@ -93,6 +99,62 @@ public class SaleOption extends AppCompatActivity {
                 return true;
             }
         });
+
+        dateOneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callDatePickerFirst();
+            }
+        });
+
+        dateTwoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callDatePickerSecond();
+            }
+        });
+
+        submitDates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterByDates();
+            }
+        });
+    }
+
+    private void filterByDates() {
+        amount = new ArrayList<>();
+        id = new ArrayList<>();
+        machine = new ArrayList<>();
+        product = new ArrayList<>();
+        date = new ArrayList<>();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        long userid = sharedPreferences.getLong("user_id", -1);
+
+        if (userid == -1) {
+            Toast.makeText(this, "Авторизуйтесь!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        SQLiteDatabase sqlite = mydb.getWritableDatabase();
+
+        String query = "select sale._id,vending_machines.name,products.name,sale.mydate,sale.amount from sale inner join vending_machines on sale.machineId = vending_machines._id inner join products on sale.productId = products._id WHERE saleCustomer = " + userid + " AND date(sale.mydate) >= date('" + dateOne.getText().toString() + "') AND date(sale.mydate) <= date('" + dateTwo.getText().toString() + "')";
+        Cursor cursor = sqlite.rawQuery(query,null);
+
+        if (cursor.getCount() == 0) {
+            Toast.makeText(this, "Нет данных!", Toast.LENGTH_SHORT).show();
+        } else {
+            while (cursor.moveToNext()) {
+                id.add(cursor.getString(0));
+                machine.add(cursor.getString(1));
+                product.add(cursor.getString(2));
+                date.add(cursor.getString(3));
+                amount.add(cursor.getString(4));
+            }
+        }
+        adapter.filterLists(product,machine,date,id,amount);
     }
 
     public void filter(String newText){
@@ -155,10 +217,59 @@ public class SaleOption extends AppCompatActivity {
     }
 
     public void init(){
+        submitDates = findViewById(R.id.selectDate);
+        dateOneBtn = findViewById(R.id.sale_date_first);
+        dateTwoBtn = findViewById(R.id.sale_date_second);
+        dateOne = findViewById(R.id.dateOne);
+        dateTwo = findViewById(R.id.dateTwo);
         sale_RV = findViewById(R.id.sale_view);
         sale_SV = findViewById(R.id.sale_search);
         addSale = findViewById(R.id.sale_add);
         backButton = findViewById(R.id.backMainSale);
         updateSale = findViewById(R.id.updateSale);
+    }
+
+    public void callDatePickerFirst(){
+        int mYear, mMonth, mDay;
+        final Calendar cal = Calendar.getInstance();
+        mYear = cal.get(Calendar.YEAR);
+        mMonth = cal.get(Calendar.MONTH);
+        mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        String day,month;
+                        monthOfYear +=1;
+                        month = monthOfYear < 10 ? "0"+monthOfYear : String.valueOf(monthOfYear);
+                        day = dayOfMonth < 10 ? "0"+dayOfMonth : String.valueOf(dayOfMonth);
+                        String editTextDateParam = year + "-" + month + "-" + day;
+                        dateOne.setText(editTextDateParam);
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+    }
+
+    public void callDatePickerSecond(){
+        int mYear, mMonth, mDay;
+        final Calendar cal = Calendar.getInstance();
+        mYear = cal.get(Calendar.YEAR);
+        mMonth = cal.get(Calendar.MONTH);
+        mDay = cal.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        String day,month;
+                        monthOfYear +=1;
+                        month = monthOfYear < 10 ? "0"+monthOfYear : String.valueOf(monthOfYear);
+                        day = dayOfMonth < 10 ? "0"+dayOfMonth : String.valueOf(dayOfMonth);
+                        String editTextDateParam = year + "-" + month + "-" + day;
+                        dateTwo.setText(editTextDateParam);
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
     }
 }

@@ -67,17 +67,41 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:textColor="@color/white"
-        android:background="@drawable/buttonbg"
         android:id="@+id/registrationButton"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/buttonbg"
         android:text="Зарегистрироваться"
+        android:textColor="@color/white"
         android:textSize="13dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailField"
-        app:layout_constraintVertical_bias="0.118" />
+        app:layout_constraintVertical_bias="0.389" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/chooseProfileImg"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttonbg"
+        android:text="Выбрать фото профиля"
+        android:textColor="@color/white"
+        android:textSize="13dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailField"
+        app:layout_constraintVertical_bias="0.145" />
+
+    <ImageView
+        android:id="@+id/profileImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_launcher_background"
+        tools:layout_editor_absoluteX="140dp"
+        tools:layout_editor_absoluteY="630dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
