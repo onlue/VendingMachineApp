@@ -26,6 +26,14 @@ import android.widget.QuickContactBadge;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -38,11 +46,15 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView profilePic;
 
+    BarChart barChart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        barChart = findViewById(R.id.BarchartsStats);
 
         profilePic = findViewById(R.id.mainMenuProfilePic);
 
@@ -65,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.regBtn).setVisibility(View.INVISIBLE);
             TextView loginText = findViewById(R.id.ProfileName);
             loginText.setText(sharedPreferences.getString("user_login","ERROR"));
+            barChart.setVisibility(View.VISIBLE);
+            findViewById(R.id.updateChart).setVisibility(View.VISIBLE);
         }
         else{
             findViewById(R.id.authBtn).setVisibility(View.VISIBLE);
@@ -166,6 +180,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        initChart();
+        findViewById(R.id.updateChart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initChart();
+            }
+        });
+    }
+
+    public void initChart(){
+        MyDataBaseHelper myDataBaseHelper = new MyDataBaseHelper(this);
+        SQLiteDatabase sqlite = myDataBaseHelper.getWritableDatabase();
+
+        ArrayList<BarEntry> barArray = new ArrayList<>();
+        ArrayList<String> dates = new ArrayList<>();
+
+        int i = 0;
+        Cursor cursor = sqlite.rawQuery("SELECT SUM(amount),mydate from sale where saleCustomer = " + sharedPreferences.getLong("user_id", -1) + " GROUP BY mydate HAVING date(mydate) >= date('now','-1 month')",null);
+        while(cursor.moveToNext()){
+            barArray.add(new BarEntry(i,cursor.getInt(0)));
+            dates.add(cursor.getString(1));
+            i+=1;
+        }
+
+        BarDataSet barDataSet = new BarDataSet(barArray, "Продажи за 30 дней");
+        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        barDataSet.setValueTextSize(13);
+        barChart.setData(new BarData(barDataSet));
+        barChart.getDescription().setText("");
+        barChart.animateX(1000);
+        barChart.animateY(1000);
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(dates));
     }
 
     @Override

@@ -149,7 +149,7 @@ public class AddSale extends AppCompatActivity {
         machine_spin = findViewById(R.id.SaleMachineSpin);
         product_spin = findViewById(R.id.SaleProductSpin);
 
-        String query = "select DISTINCT machine_capacity.machine_id, vending_machines.name from machine_capacity inner join vending_machines on machine_capacity.machine_id = vending_machines._id;";
+        String query = "select DISTINCT machine_capacity.machine_id, vending_machines.name from machine_capacity inner join vending_machines on machine_capacity.machine_id = vending_machines._id";
         Cursor cursor = sqlite.rawQuery(query,null);
         while(cursor.moveToNext()){
             machinesName.add(cursor.getString(1));
@@ -160,8 +160,5 @@ public class AddSale extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, machinesName);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         machine_spin.setAdapter(adapter);
-
-        initProducts(Integer.valueOf(machineId.get(machineId.size()-1)));
-
     }
 }

@@ -1,6 +1,7 @@
 package com.example.vendingmachineapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -8,9 +9,25 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -20,6 +37,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     TextView option_selled, option_machinecapacity, option_selledFor, option_service;
 
+    Button pageOne, pageTwo;
+
+    ConstraintLayout layoutOne, layoutTwo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +48,22 @@ public class ProfileActivity extends AppCompatActivity {
 
         init();
         initFields();
+
+        pageOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutTwo.setVisibility(View.INVISIBLE);
+                layoutOne.setVisibility(View.VISIBLE);
+            }
+        });
+
+        pageTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutOne.setVisibility(View.INVISIBLE);
+                layoutTwo.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     public void initFields() {
@@ -85,6 +122,12 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void init() {
+        layoutOne = findViewById(R.id.firstPage);
+        layoutTwo = findViewById(R.id.secondPage);
+
+        pageOne = findViewById(R.id.page1Button);
+        pageTwo = findViewById(R.id.page2Button);
+
         profilePic = findViewById(R.id.profilePicture);
 
         sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
@@ -100,5 +143,37 @@ public class ProfileActivity extends AppCompatActivity {
         option_machinecapacity = findViewById(R.id.profile_MachineCapacity);
         option_selledFor = findViewById(R.id.profile_moneyAmount);
         option_service = findViewById(R.id.profile_ServiceCost);
+
+        initChart();
+    }
+
+    public void initChart(){
+        PieChart pieChart = findViewById(R.id.pieChar);
+
+        MyDataBaseHelper myDataBaseHelper = new MyDataBaseHelper(this);
+        SQLiteDatabase sqlite = myDataBaseHelper.getWritableDatabase();
+
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+
+        Cursor cursor = sqlite.rawQuery("SELECT SUM(sale.amount * products.price) from sale inner join products on sale.productId = products._id where  date(sale.mydate) >= date('now','-1 month') and sale.saleCustomer = " + sharedPreferences.getLong("user_id",-1),null);
+        cursor.moveToFirst();
+        int sales = cursor.getString(0) == "null" ? 0 : cursor.getInt(0);
+        pieEntries.add(new PieEntry(sales));
+
+        cursor = sqlite.rawQuery("SELECT SUM(servicesDesc.price) from servicesDesc inner join services on services.idServ = servicesDesc._id where date(services.mydate) >= date('now','-1 month') and services.servicesCustomer = " + sharedPreferences.getLong("user_id",-1),null);
+        cursor.moveToFirst();
+        int services = cursor.getString(0) == "null" ? 0 : cursor.getInt(0);
+        pieEntries.add(new PieEntry(services));
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Продажи за 30 дней/Расходы");
+
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSet.setValueTextSize(13);
+        pieChart.setData(new PieData(pieDataSet));
+        pieChart.getDescription().setText("");
+        pieChart.animateX(1000);
+        pieChart.animateY(1000);
+//        XAxis xAxis = pieChart.getXAxis();
+//        xAxis.setValueFormatter(new IndexAxisValueFormatter(dates));
     }
 }

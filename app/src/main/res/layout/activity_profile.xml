@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".ProfileActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:visibility="invisible"
+        android:id="@+id/secondPage"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pieChar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <View
         android:id="@+id/view"
         android:layout_width="250dp"
@@ -66,53 +83,97 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/profile_selledAmount"
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/firstPage"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="344dp"
+            android:text="Описание за месяц"
+            android:textSize="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/profile_selledAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="124dp"
+            android:text="TextView"
+            android:textColor="#004336"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/profile_MachineCapacity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
+            android:text="TextView"
+            android:textColor="#004336"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_selledAmount" />
+
+        <TextView
+            android:id="@+id/profile_moneyAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
+            android:text="TextView"
+            android:textColor="#004336"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_MachineCapacity" />
+
+        <TextView
+            android:id="@+id/profile_ServiceCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
+            android:text="TextView"
+            android:textColor="#004336"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_moneyAmount" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/page1Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="36dp"
-        android:text="TextView"
-        android:textColor="#004336"
-        android:textSize="16sp"
+        android:text="За месяц"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
 
-    <TextView
-        android:id="@+id/profile_MachineCapacity"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/page2Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        android:textColor="#004336"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_selledAmount" />
-
-    <TextView
-        android:id="@+id/profile_moneyAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        android:textColor="#004336"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_MachineCapacity" />
-
-    <TextView
-        android:id="@+id/profile_ServiceCost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="20dp"
-        android:text="TextView"
-        android:textColor="#004336"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_moneyAmount" />
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="36dp"
+        android:text="Прибыль/Расходы"
+        app:layout_constraintStart_toEndOf="@+id/page1Button"
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
