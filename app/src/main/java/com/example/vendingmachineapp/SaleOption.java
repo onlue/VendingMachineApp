@@ -34,6 +34,7 @@ public class SaleOption extends AppCompatActivity {
     ArrayList<String> amount, id, machine, product,date;
     customSaleAdapter adapter;
 
+    Button sortDateASC, sortDateDESC;
     Button backButton, dateOneBtn, dateTwoBtn, submitDates;
     TextView dateOne, dateTwo;
     ImageView updateSale;
@@ -42,6 +43,9 @@ public class SaleOption extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale_option);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        long userid = sharedPreferences.getLong("user_id", -1);
 
         init();
         mydb = new MyDataBaseHelper(SaleOption.this);
@@ -70,9 +74,6 @@ public class SaleOption extends AppCompatActivity {
                 machine = new ArrayList<>();
                 product = new ArrayList<>();
                 date = new ArrayList<>();
-
-                SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
-                long userid = sharedPreferences.getLong("user_id", -1);
 
                 Cursor cursor = mydb.readSaleData(userid);
 
@@ -118,6 +119,20 @@ public class SaleOption extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 filterByDates();
+            }
+        });
+
+        sortDateASC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sortMethod("select sale._id,vending_machines.name,products.name,sale.mydate,sale.amount from sale inner join vending_machines on sale.machineId = vending_machines._id inner join products on sale.productId = products._id WHERE saleCustomer = " + userid + " ORDER BY date(sale.mydate) ASC");
+            }
+        });
+
+        sortDateDESC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sortMethod("select sale._id,vending_machines.name,products.name,sale.mydate,sale.amount from sale inner join vending_machines on sale.machineId = vending_machines._id inner join products on sale.productId = products._id WHERE saleCustomer = " + userid + " ORDER BY date(sale.mydate) DESC");
             }
         });
     }
@@ -216,7 +231,30 @@ public class SaleOption extends AppCompatActivity {
         sale_RV.setLayoutManager(new LinearLayoutManager(SaleOption.this));
     }
 
+    public void sortMethod(String query){
+        amount = new ArrayList<>();
+        id = new ArrayList<>();
+        machine = new ArrayList<>();
+        product = new ArrayList<>();
+        date = new ArrayList<>();
+
+        SQLiteDatabase sqlite = mydb.getWritableDatabase();
+
+        Cursor cursor = sqlite.rawQuery(query,null);
+
+        while (cursor.moveToNext()) {
+            id.add(cursor.getString(0));
+            machine.add(cursor.getString(1));
+            product.add(cursor.getString(2));
+            date.add(cursor.getString(3));
+            amount.add(cursor.getString(4));
+        }
+        adapter.filterLists(product,machine,date,id,amount);
+    }
+
     public void init(){
+        sortDateDESC = findViewById(R.id.sortByDateDESC);
+        sortDateASC = findViewById(R.id.sortByDateASC);
         submitDates = findViewById(R.id.selectDate);
         dateOneBtn = findViewById(R.id.sale_date_first);
         dateTwoBtn = findViewById(R.id.sale_date_second);

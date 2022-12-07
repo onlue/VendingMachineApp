@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 public class MyDataBaseHelper extends SQLiteOpenHelper {
 
     SharedPreferences settings;
-
     private Context context;
     public static final String DATABASE_NAME = "VendingDB";
     public static final int DATABASE_VERSION = 1;
