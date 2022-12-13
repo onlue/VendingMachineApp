@@ -116,9 +116,8 @@ public class VendingsOption extends AppCompatActivity {
         }
         if (idFilter.isEmpty()) {
             Toast.makeText(this, "Ничего не найдено!", Toast.LENGTH_SHORT).show();
-        } else {
-            adapter.filterLists(idFilter, nameFilter, capacityFilter, locationFilter);
         }
+        adapter.filterLists(idFilter, nameFilter, capacityFilter, locationFilter);
     }
 
     public void storeVendingDataInArrays() {

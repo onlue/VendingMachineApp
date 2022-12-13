@@ -162,9 +162,9 @@ public class ProductsOption extends AppCompatActivity {
         }
         if (idFilter.isEmpty()) {
             Toast.makeText(this, "Ничего не найдено!", Toast.LENGTH_SHORT).show();
-        } else {
-            adapter.filterLists(idFilter, nameFilter, priceFilter, descFilter, images);
         }
+            adapter.filterLists(idFilter, nameFilter, priceFilter, descFilter, images);
+
     }
 
 

@@ -191,9 +191,9 @@ public class SaleOption extends AppCompatActivity {
         }
         if (idFilter.isEmpty()) {
             Toast.makeText(this, "Ничего не найдено!", Toast.LENGTH_SHORT).show();
-        } else {
-            adapter.filterLists(productFilter,machineFilter,dateFilter,idFilter,amountFilter);
         }
+            adapter.filterLists(productFilter,machineFilter,dateFilter,idFilter,amountFilter);
+
     }
 
     private void storeDataInArrays() {
