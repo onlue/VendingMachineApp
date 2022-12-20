@@ -145,7 +145,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/sortByDateASC"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="По возрастанию дат"
@@ -155,13 +155,35 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/sortByDateDESC"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="96dp"
                 android:text="По убыванию дат"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/selectDate" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/sortByAmountselledASC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="По возрастанию количества"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sortByDateDESC" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/sortByAmountselledDESC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="По убыванию количества"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sortByAmountselledASC" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

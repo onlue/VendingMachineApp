@@ -34,7 +34,7 @@ public class SaleOption extends AppCompatActivity {
     ArrayList<String> amount, id, machine, product,date;
     customSaleAdapter adapter;
 
-    Button sortDateASC, sortDateDESC;
+    Button sortDateASC, sortDateDESC, sortAmountASC, sortAmountDESC;
     Button backButton, dateOneBtn, dateTwoBtn, submitDates;
     TextView dateOne, dateTwo;
     ImageView updateSale;
@@ -133,6 +133,20 @@ public class SaleOption extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 sortMethod("select sale._id,vending_machines.name,products.name,sale.mydate,sale.amount from sale inner join vending_machines on sale.machineId = vending_machines._id inner join products on sale.productId = products._id WHERE saleCustomer = " + userid + " ORDER BY date(sale.mydate) DESC");
+            }
+        });
+
+        sortAmountASC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sortMethod("select sale._id,vending_machines.name,products.name,sale.mydate,sale.amount from sale inner join vending_machines on sale.machineId = vending_machines._id inner join products on sale.productId = products._id WHERE saleCustomer = " + userid + " ORDER BY sale.amount ASC");
+            }
+        });
+
+        sortAmountDESC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sortMethod("select sale._id,vending_machines.name,products.name,sale.mydate,sale.amount from sale inner join vending_machines on sale.machineId = vending_machines._id inner join products on sale.productId = products._id WHERE saleCustomer = " + userid + " ORDER BY sale.amount DESC");
             }
         });
     }
@@ -253,6 +267,8 @@ public class SaleOption extends AppCompatActivity {
     }
 
     public void init(){
+        sortAmountASC = findViewById(R.id.sortByAmountselledASC);
+        sortAmountDESC = findViewById(R.id.sortByAmountselledDESC);
         sortDateDESC = findViewById(R.id.sortByDateDESC);
         sortDateASC = findViewById(R.id.sortByDateASC);
         submitDates = findViewById(R.id.selectDate);

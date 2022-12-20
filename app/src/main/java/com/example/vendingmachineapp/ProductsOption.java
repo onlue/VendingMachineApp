@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -37,10 +38,12 @@ public class ProductsOption extends AppCompatActivity {
     ImageView updateProducts;
     Button btn;
 
-    Button sortPriceASC,sortPriceDESC,sortWeightASC,sortWeightDESC;
+    EditText borderOne, borderTwo;
+    Button sortPriceASC,sortPriceDESC,sortWeightASC,sortWeightDESC, sortBetween;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.products_layout);
 
@@ -140,6 +143,15 @@ public class ProductsOption extends AppCompatActivity {
         adapter = new customProductAdapter(ProductsOption.this, ProductsOption.this, name, price, id, desc, images);
         products_RV.setAdapter(adapter);
         products_RV.setLayoutManager(new LinearLayoutManager(ProductsOption.this));
+
+        findViewById(R.id.sortBetween).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                borderOne = findViewById(R.id.fisrtBorder);
+                borderTwo = findViewById(R.id.secondBorder);
+                SortFunction("SELECT * FROM products WHERE price BETWEEN " + borderOne.getText().toString() + " AND " + borderTwo.getText().toString());
+            }
+        });
     }
 
     private void filter(String newText) {

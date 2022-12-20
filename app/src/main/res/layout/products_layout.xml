@@ -94,7 +94,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonSort1"
             android:text="По возрастанию цены"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="52dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +104,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonSort2"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="По убыванию цены"
@@ -115,7 +115,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonSort3"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="По возрастанию веса"
@@ -126,7 +126,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonSort4"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="По убыванию веса"
@@ -134,6 +134,42 @@
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonSort3" />
+
+        <EditText
+            android:id="@+id/fisrtBorder"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="16dp"
+            android:hint="От"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSort4"/>
+
+        <EditText
+            android:id="@+id/secondBorder"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="228dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="До"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSort4" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/sortBetween"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="76dp"
+            android:text="Фильтровать"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSort4" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.navigation.NavigationView>
 
